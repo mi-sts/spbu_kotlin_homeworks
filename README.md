@@ -1,2 +1,2 @@
-# kotlin_template
-Template repository for Kotlin project
+# kotlin_homeworks
+Kotlin homeworks at SPBU
