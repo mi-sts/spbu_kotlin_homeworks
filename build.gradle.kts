@@ -21,7 +21,7 @@ dependencies {
 }
 
 detekt {
-    failFast = true // fail build on any findingdetekt {
+    failFast = true // fail build on any finding
     config = files("spbu_kotlin_homeworks/config/detekt.yml")
 }
 
