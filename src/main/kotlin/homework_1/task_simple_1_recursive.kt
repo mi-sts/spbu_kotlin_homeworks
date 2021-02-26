@@ -1,5 +1,4 @@
 package homework_1
-
 import libraries.Input
 
 private fun printResult(factorial: Long) = println("Found the factorial: $factorial")

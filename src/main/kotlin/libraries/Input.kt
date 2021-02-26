@@ -2,6 +2,8 @@ package libraries
 
 class Input {
     companion object {
+        fun create(): Input = Input()
+
         fun getInput(): Int {
             println("Enter a natural number:")
             var number = readLine()?.toInt() ?: 0
@@ -10,7 +12,7 @@ class Input {
                 number = readLine()?.toInt() ?: 0
             }
 
-            return number;
+            return number
         }
     }
 }
