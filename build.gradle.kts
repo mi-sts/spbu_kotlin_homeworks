@@ -22,7 +22,8 @@ dependencies {
 
 detekt {
     failFast = true // fail build on any finding
-    config = files(file("config/detekt/detekt.yml"), file("config/detekt/detekt_custom.yml"))
+    config = files("config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }
 
 tasks.test {
