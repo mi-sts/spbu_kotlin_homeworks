@@ -4,7 +4,7 @@ class Input {
     companion object {
         fun create(): Input = Input()
 
-        fun getInput(): Int {
+        fun getNaturalNumber(): Int {
             println("Enter a natural number:")
             var number = readLine()?.toInt() ?: 0
             while (number <= 0) {
