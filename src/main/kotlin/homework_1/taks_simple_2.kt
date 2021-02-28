@@ -2,8 +2,20 @@ package homework_1
 import libraries.Input
 
 fun findSubstringCount(str: String, subStr: String): Int {
-    val strOccurrences = Regex(subStr).findAll(str)
-    return strOccurrences.count()
+    var occurrencesCount = 0
+    for (i in 0..str.length - subStr.length) {
+        var isOсcur = true
+        for (j in subStr.indices)
+            if (subStr[j] != str[i + j]) {
+                isOсcur = false
+                break
+            }
+
+        if (isOсcur)
+            occurrencesCount += 1
+    }
+
+    return occurrencesCount
 }
 
 fun printResult(count: Int) {
