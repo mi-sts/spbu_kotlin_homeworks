@@ -6,7 +6,7 @@ enum class ActionType {
     StartInsertion, EndInsertion, Movement
 }
 
-abstract class Action(actionType: ActionType) {
+open class Action(actionType: ActionType) {
     val actionType: ActionType = actionType
 }
 
@@ -32,14 +32,14 @@ class PerformedCommandStorage {
     }
 
     fun move(fromIndex: Int, toIndex: Int) {
-        if (fromIndex < 0 || toIndex < 0 || fromIndex > storage.count() || toIndex > storage.count())
-            throw Exception("Index does not exist!")
+        if (fromIndex !in 0..storage.count() || toIndex !in 0..storage.count()) {
+            throw IndexOutOfBoundsException("Index does not exist!")
+        }
 
         if (toIndex >= fromIndex) {
             storage.add(toIndex + 1, storage[fromIndex])
             storage.removeAt(fromIndex)
-        }
-        else {
+        } else {
             storage.add(toIndex, storage[fromIndex])
             storage.removeAt(fromIndex + 1)
         }
@@ -68,53 +68,58 @@ class PerformedCommandStorage {
 }
 
 class UserInterface private constructor() {
+    enum class UserOption(val value: Char) {
+        StartInsertion('1'), EndInsertion('2'), Movement('3'),
+        Undo('4'), Print('5'), Exit('6')
+    }
     companion object {
+        val OPTIONS_RANGE: IntRange = 1..6
         fun initialize() {
             showStartMessage()
             enableInterface()
         }
 
         fun enableInterface() {
-            var input = 0
+            var input: Char = ' '
             var number: Int
             var fromIndex: Int
             var toIndex: Int
 
-            while (input != 6) {
+            while (input != UserOption.Exit.value) {
                 showActionsMessage()
                 input = getInput()
 
                 when (input) {
-                    1 -> {
+                    UserOption.StartInsertion.value -> {
                         showElementInputMessage()
                         number = Input.getNumber(false)
                         StorageManager.insertFirst(number)
                     }
-                    2 -> {
+                    UserOption.EndInsertion.value -> {
                         showElementInputMessage()
                         number = Input.getNumber(false)
                         StorageManager.insertLast(number)
                     }
-                    3 -> {
+                    UserOption.Movement.value -> {
                         showIndexesInputMessage()
                         fromIndex = Input.getNonNegativeNumber(false)
                         toIndex = Input.getNonNegativeNumber(false)
                         StorageManager.insert(fromIndex, toIndex)
                     }
-                    4 -> StorageManager.undo()
-                    5 -> StorageManager.print()
+                    UserOption.Undo.value -> StorageManager.undo()
+                    UserOption.Print.value -> StorageManager.print()
                 }
             }
         }
 
-        fun getInput(): Int {
-            var input: Int = readLine()?.toIntOrNull() ?: 0
-            while (input <= 0 || input > 6) {
+        fun getInput(): Char {
+            var input = readLine()?.toIntOrNull() ?: 0
+            while (input !in OPTIONS_RANGE) {
                 showIncorrectInputMessage()
-                input = readLine()?.toInt() ?: 0
+                input = readLine()?.toIntOrNull() ?: 0
             }
 
-            return input
+            return input.toString().first().toChar()
         }
 
         fun showStartMessage() {
@@ -144,7 +149,7 @@ class UserInterface private constructor() {
     }
 }
 
-class StorageManager {
+class StorageManager private constructor() {
     companion object {
         var storage: PerformedCommandStorage? = null
 
