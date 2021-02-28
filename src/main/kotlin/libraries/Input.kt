@@ -1,6 +1,6 @@
 package libraries
 
-class Input private constructor(){
+class Input private constructor() {
     companion object {
         fun create(): Input = Input()
 
