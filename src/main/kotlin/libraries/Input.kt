@@ -4,8 +4,9 @@ class Input private constructor() {
     companion object {
         fun create(): Input = Input()
 
-        fun getNaturalNumber(): Int {
-            println("Enter a natural number:")
+        fun getNaturalNumber(enableFirstMessage: Boolean = true): Int {
+            if (enableFirstMessage) println("Enter a natural number:")
+
             var number = readLine()?.toInt() ?: 0
             while (number <= 0) {
                 println("Incorrect input! Enter a natural number:")
