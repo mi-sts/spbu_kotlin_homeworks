@@ -7,7 +7,7 @@ fun findSubstringCount(str: String, subStr: String): Int {
 }
 
 fun printResult(count: Int) {
-    println("Number of occurrences of second string in firs string: $count")
+    println("Number of occurrences of second string in first string: $count")
 }
 
 fun main() {
