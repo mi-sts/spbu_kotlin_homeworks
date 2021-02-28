@@ -8,7 +8,7 @@ private fun findFactorialRecursive(number: Long): Long {
 }
 
 fun main() {
-    val number = Input.getNaturalNumber()
+    val number = Input.getNaturalNumber(true)
     val factorial = findFactorialRecursive(number.toLong())
     printResult(factorial)
 }
