@@ -1,5 +1,4 @@
 package homework_1
-
 import libraries.Input
 
 fun findSubstringCount(str: String, subStr: String): Int {
