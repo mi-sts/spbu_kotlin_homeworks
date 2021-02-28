@@ -13,7 +13,7 @@ private fun findFactorialIterative(number: Long): Long {
 }
 
 fun main() {
-    val number = Input.getInput()
+    val number = Input.getNaturalNumber()
     val factorial = findFactorialIterative(number.toLong())
     printResult(factorial)
 }
