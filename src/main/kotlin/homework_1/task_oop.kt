@@ -1,7 +1,7 @@
 package homework_1
 
 import libraries.Input
-import structures.*
+import structures.PerformedCommandStorage
 
 class UserInterface private constructor() {
     enum class UserOption(val value: Char) {
