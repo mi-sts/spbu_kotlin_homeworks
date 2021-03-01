@@ -1,0 +1,14 @@
+formatting:
+  active: true
+  android: false
+  autoCorrect: true
+  PackageName:
+    active: false
+    autoCorrect: false
+
+naming:
+  active: true
+  PackageNaming:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
+    packagePattern: '[a-z]+(_[A-Za-z0-9]+)*(\.[a-z](_[A-Za-z0-9]+)*[A-Za-z0-9]*)*'
