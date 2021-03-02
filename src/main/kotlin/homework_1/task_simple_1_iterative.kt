@@ -13,6 +13,5 @@ private fun findFactorialIterative(number: Long): Long {
 
 fun main() {
     val number = Input.getNumber("Enter a non-negative number: ", Input.NumberType.POSITIVE, true)
-    val factorial = findFactorialIterative(number)
-    printResult(factorial)
+    printResult(findFactorialIterative(number))
 }
