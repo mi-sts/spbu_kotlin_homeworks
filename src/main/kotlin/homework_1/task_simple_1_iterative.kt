@@ -1,7 +1,6 @@
 package homework_1
-import libraries.Input
 
-private fun printResult(factorial: Long) = println("Found the factorial: $factorial")
+import libraries.Input
 
 private fun findFactorialIterative(number: Long): Long {
     var factorial = 1L
@@ -13,7 +12,7 @@ private fun findFactorialIterative(number: Long): Long {
 }
 
 fun main() {
-    val number = Input.getNaturalNumber(true)
+    val number = Input.getNonNegativeNumber("Enter a non-negative number: ")
     val factorial = findFactorialIterative(number.toLong())
     printResult(factorial)
 }

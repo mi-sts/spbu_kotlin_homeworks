@@ -1,19 +1,27 @@
 package libraries
 
-class Input private constructor() {
-    companion object {
-        fun create(): Input = Input()
+object Input {
+    fun getNaturalNumber(preInputMessage: String = ""): Int {
+        println(preInputMessage)
 
-        fun getNaturalNumber(enableFirstMessage: Boolean = true): Int {
-            if (enableFirstMessage) println("Enter a natural number:")
-
-            var number = readLine()?.toInt() ?: 0
-            while (number <= 0) {
-                println("Incorrect input! Enter a natural number:")
-                number = readLine()?.toInt() ?: 0
-            }
-
-            return number
+        var number = readLine()?.toInt() ?: 0
+        while (number <= 0) {
+            println("Incorrect input! Enter a natural number:")
+            number = readLine()?.toInt() ?: 0
         }
+
+        return number
+    }
+
+    fun getNonNegativeNumber(preInputMessage: String = ""): Int {
+        println(preInputMessage)
+
+        var number = readLine()?.toIntOrNull() ?: -1
+        while (number < 0) {
+            println("Incorrect input! Enter a non-negative number:")
+            number = readLine()?.toIntOrNull() ?: 0
+        }
+
+        return number
     }
 }

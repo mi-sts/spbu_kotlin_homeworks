@@ -1,14 +1,13 @@
 package homework_1
-import libraries.Input
 
-private fun printResult(factorial: Long) = println("Found the factorial: $factorial")
+import libraries.Input
 
 private fun findFactorialRecursive(number: Long): Long {
     return if (number == 1L) 1 else number * findFactorialRecursive(number - 1)
 }
 
 fun main() {
-    val number = Input.getNaturalNumber(true)
+    val number = Input.getNaturalNumber("Enter a non-negative number: ")
     val factorial = findFactorialRecursive(number.toLong())
     printResult(factorial)
 }
