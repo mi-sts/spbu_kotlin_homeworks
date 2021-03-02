@@ -1,25 +1,42 @@
 package libraries
 
 object Input {
-    fun getNaturalNumber(preInputMessage: String = ""): Long {
-        print(preInputMessage)
+    enum class NumberType { INTEGER, POSITIVE, NEGATIVE }
 
-        var number = readLine()?.toLongOrNull() ?: 0L
-        while (number <= 0L) {
-            println("Incorrect input! Enter a natural number:")
-            number = readLine()?.toLongOrNull() ?: 0L
+    private fun isNumberOccur(number: Long, type: NumberType, includingZero: Boolean): Boolean {
+        if (!includingZero && number == 0L) return false
+
+        return when (type) {
+            NumberType.INTEGER -> true
+            NumberType.NEGATIVE -> number < 0L
+            NumberType.POSITIVE -> number > 0L
         }
-
-        return number
     }
 
-    fun getNonNegativeNumber(preInputMessage: String = ""): Long {
+    fun getNumber(preInputMessage: String = "", type: NumberType, includingZero: Boolean = true): Long {
+        var numberTypeStr = ""
+
+        when (type) {
+            NumberType.INTEGER -> {
+                numberTypeStr = "an integer"
+                if (!includingZero) numberTypeStr += "(excluding number)"
+            }
+            NumberType.NEGATIVE -> {
+                numberTypeStr = "a negative"
+                if (includingZero) numberTypeStr = "a non-positive"
+            }
+            NumberType.POSITIVE -> {
+                numberTypeStr = "a positive"
+                if (includingZero) numberTypeStr = "a non-negative"
+            }
+        }
+
         print(preInputMessage)
 
-        var number = readLine()?.toLongOrNull() ?: -1L
-        while (number < 0L) {
-            println("Incorrect input! Enter a non-negative number:")
-            number = readLine()?.toLongOrNull() ?: 0L
+        var number = readLine()?.toLongOrNull()
+        while (number == null || !isNumberOccur(number, type, includingZero)) {
+            println("Incorrect input! Enter $numberTypeStr number:")
+            number = readLine()?.toLongOrNull()
         }
 
         return number
