@@ -7,7 +7,7 @@ private fun findFactorialRecursive(number: Long): Long {
 }
 
 fun main() {
-    val number = Input.getNaturalNumber("Enter a non-negative number: ")
-    val factorial = findFactorialRecursive(number.toLong())
+    val number = Input.getNonNegativeNumber("Enter a non-negative number: ")
+    val factorial = findFactorialRecursive(number)
     printResult(factorial)
 }

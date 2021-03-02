@@ -1,25 +1,25 @@
 package libraries
 
 object Input {
-    fun getNaturalNumber(preInputMessage: String = ""): Int {
-        println(preInputMessage)
+    fun getNaturalNumber(preInputMessage: String = ""): Long {
+        print(preInputMessage)
 
-        var number = readLine()?.toInt() ?: 0
+        var number = readLine()?.toLongOrNull() ?: 0L
         while (number <= 0) {
             println("Incorrect input! Enter a natural number:")
-            number = readLine()?.toInt() ?: 0
+            number = readLine()?.toLongOrNull() ?: 0L
         }
 
         return number
     }
 
-    fun getNonNegativeNumber(preInputMessage: String = ""): Int {
-        println(preInputMessage)
+    fun getNonNegativeNumber(preInputMessage: String = ""): Long {
+        print(preInputMessage)
 
-        var number = readLine()?.toIntOrNull() ?: -1
+        var number = readLine()?.toLongOrNull() ?: -1L
         while (number < 0) {
             println("Incorrect input! Enter a non-negative number:")
-            number = readLine()?.toIntOrNull() ?: 0
+            number = readLine()?.toLongOrNull() ?: 0L
         }
 
         return number
