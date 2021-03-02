@@ -3,14 +3,13 @@ import libraries.Input
 import kotlin.math.min
 
 fun findSubstringCount(str: String, subStr: String): Int {
-    var occurrencesCount = 0
+    var count = 0
 
     str.forEachIndexed {
-            index, _ -> if (str.substring(index, min(str.length, index + subStr.length)) == subStr)
-                occurrencesCount += 1
+            index, _ -> if (str.substring(index, min(str.length, index + subStr.length)) == subStr) count += 1
     }
 
-    return occurrencesCount
+    return count
 }
 
 fun printResult(count: Int) {
