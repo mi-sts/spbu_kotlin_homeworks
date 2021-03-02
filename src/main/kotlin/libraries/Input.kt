@@ -2,7 +2,7 @@ package libraries
 
 object Input {
     fun getString(preInputMessage: String = ""): String {
-        println(preInputMessage)
+        print(preInputMessage)
 
         var str: String? = readLine()
         while (str == null) {
