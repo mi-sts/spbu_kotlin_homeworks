@@ -4,7 +4,7 @@ object Input {
     enum class NumberType { INTEGER, POSITIVE, NEGATIVE }
 
     private fun isNumberOccur(number: Long, type: NumberType, includingZero: Boolean): Boolean {
-        if (!includingZero && number == 0L) return false
+        if (number == 0L) return includingZero
 
         return when (type) {
             NumberType.INTEGER -> true
@@ -19,7 +19,7 @@ object Input {
         when (type) {
             NumberType.INTEGER -> {
                 numberTypeStr = "an integer"
-                if (!includingZero) numberTypeStr += "(excluding number)"
+                if (!includingZero) numberTypeStr += "(excluding zero)"
             }
             NumberType.NEGATIVE -> {
                 numberTypeStr = "a negative"
