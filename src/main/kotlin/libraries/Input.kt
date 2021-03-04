@@ -1,31 +1,44 @@
 package libraries
 
-class Input private constructor() {
-    companion object {
-        fun create(): Input = Input()
+object Input {
+    enum class NumberType { INTEGER, POSITIVE, NEGATIVE }
 
-        fun getNonNegativeNumber(enableFirstMessage: Boolean = true): Int {
-            if (enableFirstMessage) println("Enter a non-negative number:")
+    private fun isNumberOccur(number: Long, type: NumberType, includingZero: Boolean): Boolean {
+        if (number == 0L) return includingZero
 
-            var number = readLine()?.toIntOrNull() ?: -1
-            while (number < 0) {
-                println("Incorrect input! Enter a non-negative number:")
-                number = readLine()?.toIntOrNull() ?: 0
+        return when (type) {
+            NumberType.INTEGER -> true
+            NumberType.NEGATIVE -> number < 0L
+            NumberType.POSITIVE -> number > 0L
+        }
+    }
+
+    fun getNumber(preInputMessage: String = "", type: NumberType, includingZero: Boolean = true): Long {
+        var numberTypeStr = ""
+
+        when (type) {
+            NumberType.INTEGER -> {
+                numberTypeStr = "an integer"
+                if (!includingZero) numberTypeStr += "(excluding zero)"
             }
-
-            return number
+            NumberType.NEGATIVE -> {
+                numberTypeStr = "a negative"
+                if (includingZero) numberTypeStr = "a non-positive"
+            }
+            NumberType.POSITIVE -> {
+                numberTypeStr = "a positive"
+                if (includingZero) numberTypeStr = "a non-negative"
+            }
         }
 
-        fun getNumber(enableFirstMessage: Boolean = true): Int {
-            if (enableFirstMessage) println("Enter a number:")
+        print(preInputMessage)
 
-            var number = readLine()?.toIntOrNull()
-            while (number == null) {
-                println("Incorrect input! Enter a number:")
-                number = readLine()?.toIntOrNull()
-            }
-
-            return number
+        var number = readLine()?.toLongOrNull()
+        while (number == null || !isNumberOccur(number, type, includingZero)) {
+            println("Incorrect input! Enter $numberTypeStr number:")
+            number = readLine()?.toLongOrNull()
         }
+
+        return number
     }
 }
