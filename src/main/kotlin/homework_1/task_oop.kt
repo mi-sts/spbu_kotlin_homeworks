@@ -8,11 +8,15 @@ import storages.StartInsertAction
 
 enum class UserOption(val value: Char) {
     START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'),
-    UNDO('4'), PRINT('5'), EXIT('6')
+    UNDO('4'), PRINT('5'), EXIT('6');
+
+    companion object {
+        fun getOptionsIndices(): List<Int> = values().map { it.value.toInt() }
+    }
 }
 
 object UserInterface {
-    private val OPTIONS_RANGE: IntRange = 1..UserOption.values().size
+    private val OPTIONS_RANGE = UserOption.getOptionsIndices()
 
     fun initialize(storage: PerformedCommandStorage) {
         showStartMessage()

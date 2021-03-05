@@ -17,9 +17,9 @@ class EndInsertAction(private val number: Int) : Action {
     override fun undo(storage: MutableList<Int>) { storage.removeLast() }
 }
 
-class MoveAction(val fromIndex: Int, val toIndex: Int) : Action {
+class MoveAction(private val fromIndex: Int, private val toIndex: Int) : Action {
     private fun checkIndexBounds(storage: MutableList<Int>) {
-        if (fromIndex !in 0..storage.count() || toIndex !in 0..storage.count()) {
+        if (fromIndex !in storage.indices || toIndex !in storage.indices) {
             throw IndexOutOfBoundsException("Index does not exist!")
         }
     }
