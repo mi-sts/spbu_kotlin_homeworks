@@ -11,6 +11,7 @@ object Input {
         }
 
         return str
+    }
       
     enum class NumberType { INTEGER, POSITIVE, NEGATIVE }
 
