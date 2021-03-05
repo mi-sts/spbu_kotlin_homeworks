@@ -12,7 +12,7 @@ object Input {
 
         return str
     }
-      
+
     enum class NumberType { INTEGER, POSITIVE, NEGATIVE }
 
     private fun isNumberOccur(number: Long, type: NumberType, includingZero: Boolean): Boolean {
