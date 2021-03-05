@@ -11,7 +11,7 @@ enum class UserOption(val value: Char) {
     UNDO('4'), PRINT('5'), EXIT('6');
 
     companion object {
-        fun getOptionsIndices(): List<Int> = values().map { it.value.toInt() }
+        fun getOptionsIndices(): List<Int> = values().map { it.value.toString().toInt() }
     }
 }
 
