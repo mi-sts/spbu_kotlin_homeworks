@@ -6,11 +6,17 @@ import storages.MoveAction
 import storages.PerformedCommandStorage
 import storages.StartInsertAction
 
+/**
+ * Defines the set of user options and symbols used to select them.
+ */
 enum class UserOption(val value: Char) {
     START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'),
     UNDO('4'), PRINT('5'), EXIT('6');
 
     companion object {
+        /**
+         * @return the list with symbols used to select options.
+         */
         fun getOptionsIndices(): List<Int> = values().map { it.value.toString().toInt() }
     }
 }
@@ -18,11 +24,18 @@ enum class UserOption(val value: Char) {
 object UserInterface {
     private val OPTIONS_RANGE = UserOption.getOptionsIndices()
 
+    /**
+     * Initialize the user interface.
+     */
     fun initialize(storage: PerformedCommandStorage) {
         showStartMessage()
         enableInterface(storage)
     }
 
+    /**
+     * Enable the user interface.
+     * It provides the set of options to interact with storage.
+     */
     private fun enableInterface(storage: PerformedCommandStorage) {
         var input = ' '
 
@@ -53,6 +66,11 @@ object UserInterface {
         }
     }
 
+    /**
+     * Receives the symbol from user used to select the option.
+     * While given value is incorrect, attempts to enter the symbol will be provided.
+     * @return the symbol received from user used to select the option.
+     */
     private fun getInput(): Char {
         var input = readLine()?.toIntOrNull() ?: 0
         while (input !in OPTIONS_RANGE) {
@@ -67,6 +85,9 @@ object UserInterface {
         println("Interface for interacting with storage. Enter a number to select a option:")
     }
 
+    /**
+     * Shows the message with the list of available options.
+     */
     private fun showActionsMessage() {
         println("1 - Insert an element to the beginning.")
         println("2 - Insert an element to the end.")
