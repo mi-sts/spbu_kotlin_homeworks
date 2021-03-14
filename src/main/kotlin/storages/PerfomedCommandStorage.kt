@@ -170,8 +170,7 @@ class PerformedCommandStorage {
             val file = File(directoryPath + fileName)
             val loadedActionsList: Array<Action> = format.decodeFromString(file.readText())
             actions.addAll(loadedActionsList.map { it.apply { apply(storage) } })
-        }
-        catch (e: FileNotFoundException) {
+        } catch (e: FileNotFoundException) {
             showFileNotExistMessage()
         }
     }
