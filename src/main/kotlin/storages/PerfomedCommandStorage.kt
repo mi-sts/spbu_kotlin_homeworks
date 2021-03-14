@@ -1,5 +1,16 @@
 package storages
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+import java.io.File
+import java.io.FileNotFoundException
+
 /**
  * Defines the storage action.
  */
@@ -20,6 +31,8 @@ interface Action {
  * Defines the action for adding the number to the starting position of the storage.
  * @property[number] the number that is being added.
  */
+@Serializable
+@SerialName("startInsertion")
 class StartInsertAction(private val number: Int) : Action {
     override fun apply(storage: MutableList<Int>) = storage.add(0, number)
 
@@ -30,6 +43,8 @@ class StartInsertAction(private val number: Int) : Action {
  * Defines the action for adding the number to the end position of the storage.
  * @property[number] the number that is being added.
  */
+@Serializable
+@SerialName("endInsertion")
 class EndInsertAction(private val number: Int) : Action {
     override fun apply(storage: MutableList<Int>) { storage.add(number) }
 
@@ -41,6 +56,8 @@ class EndInsertAction(private val number: Int) : Action {
  * @property[fromIndex] the index from which the number is moved.
  * @property[toIndex] the index where the number is moved to.
  */
+@Serializable
+@SerialName("moving")
 class MoveAction(private val fromIndex: Int, private val toIndex: Int) : Action {
     /**
      * Checks the existence of indexes of the storage.
@@ -120,4 +137,42 @@ class PerformedCommandStorage {
      * Prints the storage.
      */
     fun print() = println(storage.toString())
+
+    private val module = SerializersModule {
+        polymorphic(Action::class) {
+            subclass(StartInsertAction::class)
+            subclass(EndInsertAction::class)
+            subclass(MoveAction::class)
+        }
+    }
+
+    private val format = Json { serializersModule = module }
+
+    /**
+     * Saves the actions to a file.
+     * @param[directoryPath] the local path to the file folder.
+     * @param[fileName] the name of the file.
+     */
+    fun save(directoryPath: String, fileName: String) {
+        val actionsString = format.encodeToString(actions.toList())
+        File(directoryPath + fileName).apply { createNewFile() }.writeText(actionsString)
+    }
+
+    private fun showFileNotExistMessage() = println("The saved file was not detected!")
+
+    /**
+     * Loads the actions from file and applies them to storage.
+     * @param[directoryPath] the local path to the file folder.
+     * @param[fileName] the name of the file.
+     */
+    fun load(directoryPath: String, fileName: String) {
+        try {
+            val file = File(directoryPath + fileName)
+            val loadedActionsList: Array<Action> = format.decodeFromString(file.readText())
+            actions.addAll(loadedActionsList.map { it.apply { apply(storage) } })
+        }
+        catch (e: FileNotFoundException) {
+            showFileNotExistMessage()
+        }
+    }
 }

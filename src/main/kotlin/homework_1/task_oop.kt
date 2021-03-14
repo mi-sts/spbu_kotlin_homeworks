@@ -6,12 +6,15 @@ import storages.MoveAction
 import storages.PerformedCommandStorage
 import storages.StartInsertAction
 
+const val DATA_DIR_PATH = "src/main/kotlin/homework_1/actions_data/"
+const val DATA_FILENAME = "action_data.json"
+
 /**
  * Defines the set of user options and symbols used to select them.
  */
 enum class UserOption(val value: Char) {
-    START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'),
-    UNDO('4'), PRINT('5'), EXIT('6');
+    START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'), UNDO('4'),
+    PRINT('5'), SAVE_ACTIONS('6'), LOAD_ACTIONS('7'), EXIT('8');
 
     companion object {
         /**
@@ -62,6 +65,8 @@ object UserInterface {
                 }
                 UserOption.UNDO.value -> storage.undo()
                 UserOption.PRINT.value -> storage.print()
+                UserOption.SAVE_ACTIONS.value -> storage.save(DATA_DIR_PATH, DATA_FILENAME)
+                UserOption.LOAD_ACTIONS.value -> storage.load(DATA_DIR_PATH, DATA_FILENAME)
             }
         }
     }
@@ -94,7 +99,9 @@ object UserInterface {
         println("3 - Move an element to a position.")
         println("4 - Undo the last action.")
         println("5 - Print the storage.")
-        println("6 - Exit.")
+        println("6 - Save actions.")
+        println("7 - Load and apply actions.")
+        println("8 - Exit.")
     }
 
     private fun showIncorrectInputMessage() = println("The input must be a number between 1 and 6!")
