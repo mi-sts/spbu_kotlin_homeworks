@@ -4,6 +4,12 @@ package libraries
  * Input functions to get the correct data.
  */
 object Input {
+    /**
+     * Receives the string from the user.
+     * While given value is null, attempts to enter the number will be provided.
+     * @param[preInputMessage] the message that will be printed at the beginning.
+     * @return the string received from the user.
+     */
     fun getString(preInputMessage: String = ""): String {
         print(preInputMessage)
 
@@ -44,7 +50,7 @@ object Input {
      * @param[preInputMessage] the message that will be printed at the beginning.
      * @param[type] the type of received number.
      * @param[includingZero] is zero is included in the range of the number type.
-     * @return the number received from the user of given type.
+     * @return the number of given type received from the user.
      */
     fun getNumber(preInputMessage: String = "", type: NumberType, includingZero: Boolean = true): Long {
         var numberTypeStr = ""
@@ -73,5 +79,23 @@ object Input {
         }
 
         return number
+    }
+
+    /**
+     * Receives the list of integer numbers from the user.
+     * They are entered separated by a space.
+     * While the number of recognized numbers equals zero, attempts to enter them again will be provided.
+     * @param[preInputMessage] the message that will be printed at the beginning.
+     * @return the list of integer numbers received from the user.
+     */
+    fun getNumbersList(preInputMessage: String = ""): List<Long> {
+        print(preInputMessage)
+        var inputNumbers = getString().parseIntegers()
+        while (inputNumbers.count() == 0) {
+            println("Incorrect input! Enter the numbers separated by a space:")
+            inputNumbers = getString().parseIntegers()
+        }
+
+        return inputNumbers
     }
 }
