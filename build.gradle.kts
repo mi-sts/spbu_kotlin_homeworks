@@ -52,6 +52,13 @@ tasks.test {
     useJUnit()
 }
 
+tasks.withType<KotlinCompile>() {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Werror")
+    }
+}
+
 application {
     mainClass.set("MainKt")
 }
