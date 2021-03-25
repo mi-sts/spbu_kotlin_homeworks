@@ -1,4 +1,4 @@
-package libraries
+package utils
 
 /**
  * String extension to find the number of occurrences of substring.

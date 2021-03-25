@@ -108,6 +108,16 @@ class MoveAction(private val fromIndex: Int, private val toIndex: Int) : Action 
  * -undo the last applied action.
  */
 class PerformedCommandStorage {
+    private val module = SerializersModule {
+        polymorphic(Action::class) {
+            subclass(StartInsertAction::class)
+            subclass(EndInsertAction::class)
+            subclass(MoveAction::class)
+        }
+    }
+
+    private val format = Json { serializersModule = module }
+
     private var actions: MutableList<Action> = mutableListOf()
     private var storage: MutableList<Int> = mutableListOf()
 
@@ -133,42 +143,32 @@ class PerformedCommandStorage {
         actions.removeLast()
     }
 
-    /**
-     * Prints the storage.
-     */
     fun print() = println(storage.toString())
-
-    private val module = SerializersModule {
-        polymorphic(Action::class) {
-            subclass(StartInsertAction::class)
-            subclass(EndInsertAction::class)
-            subclass(MoveAction::class)
-        }
-    }
-
-    private val format = Json { serializersModule = module }
 
     /**
      * Saves the actions to a file.
-     * @param[directoryPath] the local path to the file folder.
-     * @param[fileName] the name of the file.
+     * @param[filePath] the path to the file.
      */
-    fun save(directoryPath: String, fileName: String) {
+    fun save(filePath: String) {
+        val file = File(filePath)
         val actionsString = format.encodeToString(actions.toList())
-        File(directoryPath + fileName).apply { createNewFile() }.writeText(actionsString)
+        println(actionsString)
+        file.writeText(actionsString)
     }
 
     private fun showFileNotExistMessage() = println("The saved file was not detected!")
 
     /**
      * Loads the actions from file and applies them to storage.
-     * @param[directoryPath] the local path to the file folder.
-     * @param[fileName] the name of the file.
+     * @param[filePath] the path to the file.
      */
-    fun load(directoryPath: String, fileName: String) {
+    fun load(filePath: String) {
         try {
-            val file = File(directoryPath + fileName)
-            val loadedActionsList: Array<Action> = format.decodeFromString(file.readText())
+            val fileText = File(filePath).readText()
+            if (fileText.isEmpty())
+                return
+
+            val loadedActionsList: Array<Action> = format.decodeFromString(fileText)
             actions.addAll(loadedActionsList.map { it.apply { apply(storage) } })
         } catch (e: FileNotFoundException) {
             showFileNotExistMessage()

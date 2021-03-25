@@ -1,6 +1,6 @@
 package homework_1
 
-import libraries.Input
+import utils.Input
 
 /**
  * Calculates the factorial recursively.

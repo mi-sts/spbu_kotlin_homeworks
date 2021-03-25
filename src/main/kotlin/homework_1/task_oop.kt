@@ -1,13 +1,11 @@
+@file:Suppress("MayBeConst")
 package homework_1
 
-import libraries.Input
+import utils.Input
 import storages.EndInsertAction
 import storages.MoveAction
 import storages.PerformedCommandStorage
 import storages.StartInsertAction
-
-const val DATA_DIR_PATH = "src/main/kotlin/homework_1/actions_data/"
-const val DATA_FILENAME = "action_data.json"
 
 /**
  * Defines the set of user options and symbols used to select them.
@@ -25,7 +23,8 @@ enum class UserOption(val value: Char) {
 }
 
 object UserInterface {
-    private val OPTIONS_RANGE = UserOption.getOptionsIndices()
+    private val dataFilepath = "src/main/resources/actions_data.json"
+    private val optionsRange = UserOption.getOptionsIndices()
 
     /**
      * Initialize the user interface.
@@ -65,8 +64,8 @@ object UserInterface {
                 }
                 UserOption.UNDO.value -> storage.undo()
                 UserOption.PRINT.value -> storage.print()
-                UserOption.SAVE_ACTIONS.value -> storage.save(DATA_DIR_PATH, DATA_FILENAME)
-                UserOption.LOAD_ACTIONS.value -> storage.load(DATA_DIR_PATH, DATA_FILENAME)
+                UserOption.SAVE_ACTIONS.value -> storage.save(dataFilepath)
+                UserOption.LOAD_ACTIONS.value -> storage.load(dataFilepath)
             }
         }
     }
@@ -78,7 +77,7 @@ object UserInterface {
      */
     private fun getInput(): Char {
         var input = readLine()?.toIntOrNull() ?: 0
-        while (input !in OPTIONS_RANGE) {
+        while (input !in optionsRange) {
             showIncorrectInputMessage()
             input = readLine()?.toIntOrNull() ?: 0
         }
@@ -87,7 +86,7 @@ object UserInterface {
     }
 
     private fun showStartMessage() {
-        println("Interface for interacting with storage. Enter a number to select a option:")
+        println("Interface for interacting with storage. Enter a number to select an option:")
     }
 
     /**
