@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
 
 plugins {
@@ -51,6 +52,13 @@ detekt {
 
 tasks.test {
     useJUnit()
+}
+
+tasks.withType<KotlinCompile>() {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Werror")
+    }
 }
 
 application {

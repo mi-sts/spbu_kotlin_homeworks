@@ -150,10 +150,8 @@ class PerformedCommandStorage {
      * @param[filePath] the path to the file.
      */
     fun save(filePath: String) {
-        val file = File(filePath)
         val actionsString = format.encodeToString(actions.toList())
-        println(actionsString)
-        file.writeText(actionsString)
+        File(filePath).writeText(actionsString)
     }
 
     private fun showFileNotExistMessage() = println("The saved file was not detected!")

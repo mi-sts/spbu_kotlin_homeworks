@@ -23,7 +23,7 @@ enum class UserOption(val value: Char) {
 }
 
 object UserInterface {
-    private val dataFilepath = "src/main/resources/actions_data.json"
+    private val dataFilepath = "src/main/resources/homework_1/actions_data.json"
     private val optionsRange = UserOption.getOptionsIndices()
 
     /**
