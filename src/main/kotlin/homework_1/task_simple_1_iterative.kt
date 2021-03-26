@@ -1,6 +1,6 @@
 package homework_1
 
-import utils.Input
+import util.Input
 
 /**
  * Calculates the factorial iteratively.

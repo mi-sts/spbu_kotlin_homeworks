@@ -1,7 +1,7 @@
 @file:Suppress("MayBeConst")
 package homework_1
 
-import utils.Input
+import util.Input
 import storages.EndInsertAction
 import storages.MoveAction
 import storages.PerformedCommandStorage
