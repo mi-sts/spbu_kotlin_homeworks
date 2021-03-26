@@ -165,8 +165,7 @@ class PerformedCommandStorage {
     fun load(filePath: String) {
         try {
             val fileText = File(filePath).readText()
-            if (fileText.isEmpty())
-                return
+            if (fileText.isEmpty()) return
 
             val loadedActionsList: Array<Action> = format.decodeFromString(fileText)
             actions.addAll(loadedActionsList.map { it.apply { apply(storage) } })
