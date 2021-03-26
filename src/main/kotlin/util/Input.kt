@@ -1,4 +1,4 @@
-package utils
+package util
 
 /**
  * Input functions to get the correct data.
