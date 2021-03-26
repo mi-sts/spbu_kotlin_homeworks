@@ -1,6 +1,7 @@
+@file:Suppress("MayBeConst")
 package homework_1
 
-import libraries.Input
+import util.Input
 import storages.EndInsertAction
 import storages.MoveAction
 import storages.PerformedCommandStorage
@@ -10,8 +11,8 @@ import storages.StartInsertAction
  * Defines the set of user options and symbols used to select them.
  */
 enum class UserOption(val value: Char) {
-    START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'),
-    UNDO('4'), PRINT('5'), EXIT('6');
+    START_INSERTION('1'), END_INSERTION('2'), MOVEMENT('3'), UNDO('4'),
+    PRINT('5'), SAVE_ACTIONS('6'), LOAD_ACTIONS('7'), EXIT('8');
 
     companion object {
         /**
@@ -22,7 +23,8 @@ enum class UserOption(val value: Char) {
 }
 
 object UserInterface {
-    private val OPTIONS_RANGE = UserOption.getOptionsIndices()
+    private val dataFilepath = "src/main/resources/homework_1/actions_data.json"
+    private val optionsRange = UserOption.getOptionsIndices()
 
     /**
      * Initialize the user interface.
@@ -62,6 +64,8 @@ object UserInterface {
                 }
                 UserOption.UNDO.value -> storage.undo()
                 UserOption.PRINT.value -> storage.print()
+                UserOption.SAVE_ACTIONS.value -> storage.save(dataFilepath)
+                UserOption.LOAD_ACTIONS.value -> storage.load(dataFilepath)
             }
         }
     }
@@ -73,7 +77,7 @@ object UserInterface {
      */
     private fun getInput(): Char {
         var input = readLine()?.toIntOrNull() ?: 0
-        while (input !in OPTIONS_RANGE) {
+        while (input !in optionsRange) {
             showIncorrectInputMessage()
             input = readLine()?.toIntOrNull() ?: 0
         }
@@ -82,7 +86,7 @@ object UserInterface {
     }
 
     private fun showStartMessage() {
-        println("Interface for interacting with storage. Enter a number to select a option:")
+        println("Interface for interacting with storage. Enter a number to select an option:")
     }
 
     /**
@@ -94,7 +98,9 @@ object UserInterface {
         println("3 - Move an element to a position.")
         println("4 - Undo the last action.")
         println("5 - Print the storage.")
-        println("6 - Exit.")
+        println("6 - Save actions.")
+        println("7 - Load and apply actions.")
+        println("8 - Exit.")
     }
 
     private fun showIncorrectInputMessage() = println("The input must be a number between 1 and 6!")

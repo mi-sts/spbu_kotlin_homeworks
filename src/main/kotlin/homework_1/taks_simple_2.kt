@@ -1,6 +1,6 @@
 package homework_1
-import libraries.Input
-import libraries.findSubstringCount
+import util.Input
+import util.findSubstringCount
 
 /**
  * Prints the number of string occurrences.
