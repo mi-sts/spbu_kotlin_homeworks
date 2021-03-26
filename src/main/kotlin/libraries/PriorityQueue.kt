@@ -6,9 +6,7 @@ class PriorityQueue<E : Any> {
     class PriorityElement<E : Any>(private val element: E, private val priority: Double) :
         Comparable<PriorityElement<E>> {
         override operator fun compareTo(other: PriorityElement<E>): Int {
-            if (this.priority < other.priority) return 1
-            if (this.priority > other.priority) return -1
-            return 0
+            return priority.compareTo(other.priority)
         }
 
         fun getElement(): E = this.element
