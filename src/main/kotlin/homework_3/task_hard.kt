@@ -11,7 +11,6 @@ fun main() {
         "Enter the path to the folder to save the generated file:"
     )
     val savingFileName = Input.getString("Enter the name of generated file:")
-    
     val config = GenerationParameters(dataFilePath, savingFileDirPath, savingFileName)
 
     generateTestBlank(config)

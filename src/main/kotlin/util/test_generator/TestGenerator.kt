@@ -4,9 +4,6 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
-import libraries.test_generator.FunctionData
-import libraries.test_generator.TestData
-import libraries.test_generator.parseTestData
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -31,7 +28,7 @@ private fun createTestFunction(functionData: FunctionData): FunSpec {
 fun generateTest(testData: TestData, packageName: String, fileName: String): FileSpec {
     val testFunctionsList = testData.functionsData.map { createTestFunction(it) }
 
-    val testClass = TypeSpec.classBuilder(testData.class_name)
+    val testClass = TypeSpec.classBuilder(testData.className)
         .addModifiers(KModifier.INTERNAL)
         .addFunctions(testFunctionsList)
         .build()
@@ -47,9 +44,7 @@ fun generateTest(testData: TestData, packageName: String, fileName: String): Fil
  */
 fun saveTestFile(fileSpec: FileSpec, directoryPath: String) = fileSpec.writeTo(File(directoryPath))
 
-data class GenerationParameters(
-    val dataFilePath: String, val directoryPath: String, val generatedFileName: String
-)
+data class GenerationParameters(val dataFilePath: String, val directoryPath: String, val generatedFileName: String)
 
 /**
  * Generates the test from yaml file and saves it.
@@ -57,6 +52,6 @@ data class GenerationParameters(
  */
 fun generateTestBlank(generationParameters: GenerationParameters) {
     val testData = parseTestData(generationParameters.dataFilePath)
-    val testFileSpec = generateTest(testData, testData.package_name, generationParameters.generatedFileName)
+    val testFileSpec = generateTest(testData, testData.packageName, generationParameters.generatedFileName)
     saveTestFile(testFileSpec, generationParameters.directoryPath)
 }

@@ -1,14 +1,14 @@
-package libraries.test_generator
+package util.test_generator
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TestData (
+data class TestData(
     @SerialName("package name")
-    val package_name: String,
+    val packageName: String,
     @SerialName("class name")
-    val class_name: String,
+    val className: String,
     @SerialName("functions")
     val functionsData: List<FunctionData>
 )

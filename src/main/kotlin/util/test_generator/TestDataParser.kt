@@ -1,4 +1,4 @@
-package libraries.test_generator
+package util.test_generator
 
 import com.charleskorn.kaml.Yaml
 import java.io.File

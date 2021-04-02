@@ -1,8 +1,8 @@
 package homework_3
 
-import libraries.test_generator.FunctionData
-import libraries.test_generator.TestData
-import libraries.test_generator.parseTestData
+import util.test_generator.FunctionData
+import util.test_generator.TestData
+import util.test_generator.parseTestData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
