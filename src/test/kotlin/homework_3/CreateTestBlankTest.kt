@@ -30,7 +30,7 @@ internal class CreateTestBlankTest {
         val expectedFile = javaClass.getResource("generation/$testFolderName/${generatedFileName}_expected.kt")
 
         generateTestBlank(testData.path, tempDirectory.toString(), generatedFileName)
-        
+
         val tempFile = tempDirectory.resolve("$packageName/$generatedFileName.kt")
 
         assertEquals(expectedFile.readText().replace("\r\n", "\n"), tempFile.toFile().readText())
