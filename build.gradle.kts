@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import java.net.URL
 
 plugins {
@@ -28,8 +29,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
 }
 
 tasks.dokkaHtml.configure {
@@ -61,9 +60,14 @@ detekt {
 tasks.test {
     useJUnitPlatform()
 
-    filter {
-        excludeTestsMatching("*.heavy_*")
-        excludeTestsMatching("*.benchmark_*")
+    testLogging {
+        events(
+            TestLogEvent.STANDARD_ERROR,
+            TestLogEvent.STARTED,
+            TestLogEvent.PASSED,
+            TestLogEvent.FAILED,
+            TestLogEvent.SKIPPED
+        )
     }
 }
 
@@ -76,14 +80,4 @@ tasks.withType<KotlinCompile>() {
 
 application {
     mainClass.set("MainKt")
-}
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
 }

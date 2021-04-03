@@ -2,11 +2,11 @@ package homework_3
 
 import util.test_generator.FunctionData
 import util.test_generator.TestData
-import util.test_generator.parseTestData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import util.test_generator.TestData.Companion.parseTestData
 
 internal class DataParserTest {
 
