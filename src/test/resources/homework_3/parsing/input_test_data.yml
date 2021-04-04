@@ -1,0 +1,5 @@
+package name: util
+class name: Input
+functions:
+  - name: "getString"
+  - name: "getNumber"
