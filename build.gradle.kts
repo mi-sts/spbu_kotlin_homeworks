@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
