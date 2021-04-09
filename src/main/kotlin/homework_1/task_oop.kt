@@ -1,11 +1,10 @@
 @file:Suppress("MayBeConst")
 package homework_1
 
+import storages.*
+import storages.PerformedCommandStorage.StorageSerialization.load
+import storages.PerformedCommandStorage.StorageSerialization.save
 import util.Input
-import storages.EndInsertAction
-import storages.MoveAction
-import storages.PerformedCommandStorage
-import storages.StartInsertAction
 
 /**
  * Defines the set of user options and symbols used to select them.
@@ -29,7 +28,7 @@ object UserInterface {
     /**
      * Initialize the user interface.
      */
-    fun initialize(storage: PerformedCommandStorage) {
+    fun initialize(storage: PerformedCommandStorage<Int>) {
         showStartMessage()
         enableInterface(storage)
     }
@@ -38,7 +37,7 @@ object UserInterface {
      * Enable the user interface.
      * It provides the set of options to interact with storage.
      */
-    private fun enableInterface(storage: PerformedCommandStorage) {
+    private fun enableInterface(storage: PerformedCommandStorage<Int>) {
         var input = ' '
 
         while (input != UserOption.EXIT.value) {
@@ -65,7 +64,11 @@ object UserInterface {
                 UserOption.UNDO.value -> storage.undo()
                 UserOption.PRINT.value -> storage.print()
                 UserOption.SAVE_ACTIONS.value -> storage.save(dataFilepath)
-                UserOption.LOAD_ACTIONS.value -> storage.load(dataFilepath)
+                UserOption.LOAD_ACTIONS.value -> {
+                    val loadedActions = storage.load(dataFilepath)
+
+                    if (loadedActions != null) storage.applyActions(loadedActions)
+                }
             }
         }
     }
@@ -113,6 +116,6 @@ object UserInterface {
 }
 
 fun main() {
-    val storage = PerformedCommandStorage()
+    val storage = PerformedCommandStorage<Int>()
     UserInterface.initialize(storage)
 }
