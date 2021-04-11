@@ -42,6 +42,11 @@ class StartInsertAction<T>(private val element: T) : Action<T> {
     override fun apply(storage: MutableList<T>) = storage.add(0, element)
 
     override fun undo(storage: MutableList<T>) { storage.removeFirst() }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass &&
+            this.element == (other as StartInsertAction<*>).element
+
+    override fun hashCode(): Int = super.hashCode()
 }
 
 /**
@@ -54,6 +59,11 @@ class EndInsertAction<T>(private val element: T) : Action<T> {
     override fun apply(storage: MutableList<T>) { storage.add(element) }
 
     override fun undo(storage: MutableList<T>) { storage.removeLast() }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass &&
+            this.element == (other as EndInsertAction<*>).element
+
+    override fun hashCode(): Int = super.hashCode()
 }
 
 /**
@@ -102,6 +112,11 @@ class MoveAction<T>(private val fromIndex: Int, private val toIndex: Int) : Acti
 
         move(toIndex, fromIndex, storage)
     }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass &&
+            this.fromIndex == (other as MoveAction<*>).fromIndex && this.toIndex == other.toIndex
+
+    override fun hashCode(): Int = super.hashCode()
 }
 
 /**
@@ -113,7 +128,7 @@ class MoveAction<T>(private val fromIndex: Int, private val toIndex: Int) : Acti
  * -undo the last applied action.
  */
 class PerformedCommandStorage<T> {
-    object StorageSerialization {
+    companion object StorageSerialization {
         object IntAsObjectSerializer : KSerializer<Int> {
             @Serializable
             @SerialName("Int")
@@ -147,7 +162,7 @@ class PerformedCommandStorage<T> {
          */
         fun PerformedCommandStorage<Int>.save(filePath: String) {
             val actionsString = format.encodeToString(actions.toList())
-            File(filePath).writeText(actionsString)
+            File(filePath).apply { createNewFile() }.writeText(actionsString)
         }
 
         private fun showFileNotExistMessage() = println("The saved file was not detected!")
