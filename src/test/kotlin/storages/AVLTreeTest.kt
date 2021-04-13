@@ -50,13 +50,13 @@ internal class AVLTreeTest {
         @JvmStatic
         fun testPrintingElementsInDirectOrder(): List<Arguments> = listOf(
             Arguments.of(
-                "(1 - a) \n",
+                "(1 -> a) ",
                 mapOf(1 to "a")),
             Arguments.of(
-                "(2 - b) (1 - a) (3 - c) \n",
+                "(2 -> b) (1 -> a) (3 -> c) ",
                 mapOf(1 to "a", 2 to "b", 3 to "c")),
             Arguments.of(
-                "(2 - a) (1 - b) (4 - c) (3 - d) (5 - e) \n",
+                "(2 -> a) (1 -> b) (4 -> c) (3 -> d) (5 -> e) ",
                 mapOf(1 to "b", 2 to "a", 3 to "d", 4 to "c", 5 to "e")
             )
         )
@@ -139,7 +139,7 @@ internal class AVLTreeTest {
     fun getTreeWrittenInDirectOrderTest(expectedString: String, elements: Map<Int, String>) {
         val tree = getTreeAfterAdding(elements)
 
-        assertEquals(expectedString, tree.getTreeWrittenInDirectOrder())
+        assertEquals(expectedString, tree.getWrittenInDirectOrder())
     }
 
     @MethodSource("testAddingAndRemovingElements")
