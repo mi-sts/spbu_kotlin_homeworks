@@ -10,6 +10,10 @@ data class AVLNode <K : Comparable<K>, V> (
     private var leftChild: AVLNode<K, V>? = null,
     private var rightChild: AVLNode<K, V>? = null
 ) : MutableMap.MutableEntry<K, V> {
+    companion object {
+        const val BALANCE_COEFFICIENT = 2
+    }
+
     private var height = 1
 
     fun size(): Int = getBranchNodeList().count()
@@ -65,17 +69,15 @@ data class AVLNode <K : Comparable<K>, V> (
     }
 
     private fun balance(): AVLNode<K, V> {
-        val balanceCoefficient = 2
-
         return when (balanceFactor()) {
-            balanceCoefficient -> {
+            BALANCE_COEFFICIENT -> {
                 if (rightChild?.balanceFactor() == -1) {
                     rotateRightLeft()
                 } else {
                     rotateLeft()
                 }
             }
-            -balanceCoefficient -> {
+            -BALANCE_COEFFICIENT -> {
                 if (leftChild?.balanceFactor() == 1) {
                     rotateLeftRight()
                 } else {
