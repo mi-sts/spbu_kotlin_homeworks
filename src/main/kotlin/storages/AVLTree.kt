@@ -1,7 +1,7 @@
 package storages
 
 class AVLTree<K : Comparable<K>, V> : MutableMap<K, V> {
-    var treeRoot: AVLNode<K, V>? = null
+    private var treeRoot: AVLNode<K, V>? = null
 
     override val values: MutableCollection<V>
         get() = treeRoot?.getBranchNodeList()?.map { it.value }?.toMutableList() ?: mutableListOf()
@@ -23,10 +23,7 @@ class AVLTree<K : Comparable<K>, V> : MutableMap<K, V> {
 
     override fun isEmpty(): Boolean = size == 0
 
-    override fun clear() {
-        treeRoot?.clearBranch()
-        treeRoot = null
-    }
+    override fun clear() { treeRoot = null }
 
     override fun put(key: K, value: V): V? {
         val oldValue = treeRoot?.getNode(key)?.value

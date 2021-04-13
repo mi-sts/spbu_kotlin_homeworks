@@ -7,29 +7,24 @@ import kotlin.math.max
 data class AVLNode <K : Comparable<K>, V> (
     override var key: K,
     override var value: V,
-    var leftChild: AVLNode<K, V>? = null,
-    var rightChild: AVLNode<K, V>? = null
+    private var leftChild: AVLNode<K, V>? = null,
+    private var rightChild: AVLNode<K, V>? = null
 ) : MutableMap.MutableEntry<K, V> {
-    var height = 1
-        private set
+    private var height = 1
 
     fun size(): Int = getBranchNodeList().count()
 
-    fun setLeft(node: AVLNode<K, V>?) { leftChild = node }
+    private fun rightHeight() = rightChild?.height ?: 0
 
-    fun setRight(node: AVLNode<K, V>?) { rightChild = node }
+    private fun leftHeight() = leftChild?.height ?: 0
 
-    fun rightHeight() = rightChild?.height ?: 0
+    private fun balanceFactor() = rightHeight() - leftHeight()
 
-    fun leftHeight() = leftChild?.height ?: 0
+    private fun updateHeight() { height = max(leftHeight(), rightHeight()) + 1 }
 
-    fun balanceFactor() = rightHeight() - leftHeight()
+    private fun isLeaf() = leftChild == null && rightChild == null
 
-    fun updateHeight() { height = max(leftHeight(), rightHeight()) + 1 }
-
-    fun isLeaf() = leftChild == null && rightChild == null
-
-    fun hasOneChild() = (leftChild == null && rightChild != null) || (leftChild != null && rightChild == null)
+    private fun hasOneChild() = (leftChild == null && rightChild != null) || (leftChild != null && rightChild == null)
 
     private fun rotateLeft(): AVLNode<K, V> {
         val pivot = rightChild!!
@@ -69,7 +64,7 @@ data class AVLNode <K : Comparable<K>, V> (
         return rotateRight()
     }
 
-    fun balance(): AVLNode<K, V> {
+    private fun balance(): AVLNode<K, V> {
         val balanceCoefficient = 2
 
         return when (balanceFactor()) {
@@ -102,15 +97,9 @@ data class AVLNode <K : Comparable<K>, V> (
         return balance()
     }
 
-    private fun removeMinNodeFromBranch(): AVLNode<K, V> {
+    private fun getMinNodeFromBranch(): AVLNode<K, V> {
         var currentVertex: AVLNode<K, V>? = this
-        var parentVertex: AVLNode<K, V>? = null
-        while (currentVertex!!.leftChild != null) {
-            parentVertex = currentVertex
-            currentVertex = currentVertex.leftChild
-        }
-
-        parentVertex?.leftChild = currentVertex.rightChild
+        while (currentVertex!!.leftChild != null) currentVertex = currentVertex.leftChild
 
         return currentVertex
     }
@@ -132,9 +121,11 @@ data class AVLNode <K : Comparable<K>, V> (
             isLeaf() -> null
             hasOneChild() -> leftChild ?: rightChild
             else -> {
-                val swapNode = rightChild!!.removeMinNodeFromBranch()
-                if (swapNode != rightChild) swapNode.setRight(rightChild)
-                swapNode.setLeft(leftChild)
+                val swapNode = rightChild!!.getMinNodeFromBranch()
+                rightChild!!.removeNode(swapNode.key)
+
+                if (swapNode != rightChild) swapNode.rightChild = rightChild
+                swapNode.leftChild = leftChild
                 swapNode.updateHeight()
                 swapNode.balance()
             }
@@ -152,18 +143,6 @@ data class AVLNode <K : Comparable<K>, V> (
         hasOneChild() -> if (leftChild != null) listOf(this).plus(leftChild!!.getBranchNodeList())
             else listOf(this).plus(rightChild!!.getBranchNodeList())
         else -> leftChild!!.getBranchNodeList().plus(this).plus(rightChild!!.getBranchNodeList())
-    }
-
-    fun clearBranch() {
-        if (hasOneChild()) if (leftChild != null) leftChild = null else rightChild = null
-        else if (!isLeaf()) {
-            leftChild!!.clearBranch()
-            rightChild!!.clearBranch()
-            leftChild = null
-            rightChild = null
-        }
-
-        height = 0
     }
 
     fun getWrittenInDirectOrder(): String {
