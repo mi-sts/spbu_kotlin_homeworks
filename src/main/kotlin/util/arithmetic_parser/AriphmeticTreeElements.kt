@@ -20,7 +20,7 @@ abstract class Operation(
     height: Int
 ) : ArithmeticElement(height)
 
-class Plus(
+class Addition(
     leftOperand: ArithmeticElement,
     rightOperand: ArithmeticElement,
     height: Int
@@ -31,7 +31,7 @@ class Plus(
     override fun calculate(): Int = leftOperand.calculate() + rightOperand.calculate()
 }
 
-class Minus(
+class Subtraction(
     leftOperand: ArithmeticElement,
     rightOperand: ArithmeticElement,
     height: Int
@@ -42,7 +42,7 @@ class Minus(
     override fun calculate(): Int = leftOperand.calculate() - rightOperand.calculate()
 }
 
-class Multiply(
+class Multiplication(
     leftOperand: ArithmeticElement,
     rightOperand: ArithmeticElement,
     height: Int
@@ -53,7 +53,7 @@ class Multiply(
     override fun calculate(): Int = leftOperand.calculate() * rightOperand.calculate()
 }
 
-class Divide(
+class Division(
     leftOperand: ArithmeticElement,
     rightOperand: ArithmeticElement,
     height: Int

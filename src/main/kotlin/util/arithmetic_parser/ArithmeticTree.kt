@@ -66,10 +66,10 @@ object ArithmeticTree {
             else createArithmeticBranch(secondExpression, height + 1)!!
 
         return when (operation) {
-            "+" -> Plus(firstOperand, secondOperand, height)
-            "-" -> Minus(firstOperand, secondOperand, height)
-            "*" -> Multiply(firstOperand, secondOperand, height)
-            "/" -> Divide(firstOperand, secondOperand, height)
+            "+" -> Addition(firstOperand, secondOperand, height)
+            "-" -> Subtraction(firstOperand, secondOperand, height)
+            "*" -> Multiplication(firstOperand, secondOperand, height)
+            "/" -> Division(firstOperand, secondOperand, height)
             else -> null
         }
     }
