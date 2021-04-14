@@ -1,4 +1,4 @@
-package util.ariphmetic_parser
+package util.arithmetic_parser
 
 import util.isNumber
 
@@ -24,12 +24,15 @@ object ArithmeticTree {
     }
 
     private fun String.getFirstNumberString(): String {
-        val firstNumberStartIndex = indexOfFirst { it.isDigit() }
-
+        var firstNumberStartIndex = indexOfFirst { it.isDigit() }
         if (firstNumberStartIndex == -1) return ""
 
-        val firstNumberEndIndex = firstNumberStartIndex +
-                this.substring(firstNumberStartIndex..lastIndex).indexOfFirst { !it.isDigit() }
+        val digitsStartIndex = firstNumberStartIndex
+
+        if (firstNumberStartIndex > 0 && this[firstNumberStartIndex - 1] == '-') firstNumberStartIndex--
+
+        val firstNumberEndIndex = digitsStartIndex +
+                this.substring(digitsStartIndex..lastIndex).indexOfFirst { !it.isDigit() }
 
         return this.substring(firstNumberStartIndex, firstNumberEndIndex)
     }

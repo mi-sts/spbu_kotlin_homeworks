@@ -1,4 +1,4 @@
-package util.ariphmetic_parser
+package util.arithmetic_parser
 
 abstract class ArithmeticElement(protected val height: Int) {
     companion object { const val PRINTING_POINTS_COUNT: Int = 4 }
