@@ -3,10 +3,8 @@ package util.arithmetic_parser
 import util.isNumber
 import java.lang.IllegalArgumentException
 
+@Suppress("MagicNumber")
 object ArithmeticTree {
-    private const val OPERATION_MEMBER_INDEX = 1
-    private const val FIRST_EXPRESSION_MEMBER_START_INDEX = 3
-
     private data class OperationMembers(
         val operation: String,
         val firstExpression: String,
@@ -45,14 +43,14 @@ object ArithmeticTree {
     }
 
     private fun getExpressionMembers(expression: String): OperationMembers {
-        val operation = expression[OPERATION_MEMBER_INDEX].toString()
+        val operation = expression[1].toString()
 
         val firstExpression =
-            if (expression[FIRST_EXPRESSION_MEMBER_START_INDEX] == '(') {
-                expression.substring(FIRST_EXPRESSION_MEMBER_START_INDEX..expression.lastIndex).findOperand()
+            if (expression[3] == '(') {
+                expression.substring(3..expression.lastIndex).findOperand()
             } else expression.getFirstNumberString()
 
-        val secondExpressionMemberStartIndex = FIRST_EXPRESSION_MEMBER_START_INDEX + firstExpression.length + 1
+        val secondExpressionMemberStartIndex = 3 + firstExpression.length + 1
 
         val secondExpression = if (expression[secondExpressionMemberStartIndex] == '(') {
             expression.substring(secondExpressionMemberStartIndex, expression.lastIndex).findOperand()
