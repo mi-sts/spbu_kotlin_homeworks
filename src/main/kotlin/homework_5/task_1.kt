@@ -12,11 +12,13 @@ private object FileManager {
     fun readArithmeticExpressionFromFile(): String = File(filePath).readText()
 }
 
-private fun printArithmeticTreeWithResult(arithmeticTree: ArithmeticElement?) {
-    arithmeticTree ?: return
+private fun printIncorrectInputMessage() = println("Incorrect arithmetic expression!")
 
-    print(arithmeticTree.getWritten())
-    print("Result: ${arithmeticTree.calculate()}")
+private fun printArithmeticTreeWithResult(arithmeticTree: ArithmeticElement?) {
+    arithmeticTree ?: printIncorrectInputMessage().also { return }
+
+    print(arithmeticTree)
+    print("Result: ${arithmeticTree?.calculate()}")
 }
 
 fun main() {

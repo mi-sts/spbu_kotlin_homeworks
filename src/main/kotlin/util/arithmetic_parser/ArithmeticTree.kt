@@ -1,10 +1,17 @@
 package util.arithmetic_parser
 
 import util.isNumber
+import java.lang.IllegalArgumentException
 
 object ArithmeticTree {
     private const val OPERATION_MEMBER_INDEX = 1
     private const val FIRST_EXPRESSION_MEMBER_START_INDEX = 3
+
+    private data class OperationMembers(
+        val operation: String,
+        val firstExpression: String,
+        val secondExpression: String
+    )
 
     private fun String.findOperand(): String {
         var endIndex = 0
@@ -37,7 +44,7 @@ object ArithmeticTree {
         return this.substring(firstNumberStartIndex, firstNumberEndIndex)
     }
 
-    private fun getExpressionMembers(expression: String): List<String> {
+    private fun getExpressionMembers(expression: String): OperationMembers {
         val operation = expression[OPERATION_MEMBER_INDEX].toString()
 
         val firstExpression =
@@ -51,7 +58,7 @@ object ArithmeticTree {
             expression.substring(secondExpressionMemberStartIndex, expression.lastIndex).findOperand()
         } else expression.substring(secondExpressionMemberStartIndex..expression.lastIndex).getFirstNumberString()
 
-        return listOf(operation, firstExpression, secondExpression)
+        return OperationMembers(operation, firstExpression, secondExpression)
     }
 
     private fun createArithmeticBranch(expression: String, height: Int): ArithmeticElement? {
@@ -59,11 +66,13 @@ object ArithmeticTree {
 
         val firstOperand: ArithmeticElement =
             if (firstExpression.isNumber()) Value(firstExpression.toInt(), height + 1)
-            else createArithmeticBranch(firstExpression, height + 1)!!
+            else createArithmeticBranch(firstExpression, height + 1)
+                ?: throw IllegalArgumentException("Incorrect expression.")
 
         val secondOperand: ArithmeticElement =
             if (secondExpression.isNumber()) Value(secondExpression.toInt(), height + 1)
-            else createArithmeticBranch(secondExpression, height + 1)!!
+            else createArithmeticBranch(secondExpression, height + 1)
+                ?: throw IllegalArgumentException("Incorrect expression.")
 
         return when (operation) {
             "+" -> Addition(firstOperand, secondOperand, height)
@@ -74,5 +83,6 @@ object ArithmeticTree {
         }
     }
 
-    fun createArithmeticTree(expression: String) = createArithmeticBranch(expression, 0)
+    fun createArithmeticTree(expression: String) =
+        if (expression.isNumber()) Value(expression.toInt(), 0) else createArithmeticBranch(expression, 0)
 }

@@ -73,7 +73,7 @@ internal class ArithmeticTreeTest {
     fun getWrittenTest(expression: String, expectedWrittenExpression: String) {
         val arithmeticTree = createArithmeticTree(expression)
 
-        assertEquals(expectedWrittenExpression, arithmeticTree?.getWritten())
+        assertEquals(expectedWrittenExpression, arithmeticTree?.toString())
     }
 
     @MethodSource("expressionsCalculated")

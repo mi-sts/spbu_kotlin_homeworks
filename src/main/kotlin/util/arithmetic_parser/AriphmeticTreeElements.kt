@@ -1,15 +1,15 @@
 package util.arithmetic_parser
 
-abstract class ArithmeticElement(protected val height: Int) {
+interface ArithmeticElement {
     companion object { const val PRINTING_POINTS_COUNT: Int = 4 }
-    abstract fun getWritten(): String
-    abstract fun calculate(): Int
+    override fun toString(): String
+    fun calculate(): Int
 }
 
-class Value(private val value: Int, height: Int) : ArithmeticElement(height) {
+class Value(private val value: Int, private val height: Int) : ArithmeticElement {
     fun getValue(): Int = value
 
-    override fun getWritten(): String = "${".".repeat(PRINTING_POINTS_COUNT * height)}$value\n"
+    override fun toString(): String = "${".".repeat(ArithmeticElement.PRINTING_POINTS_COUNT * height)}$value\n"
 
     override fun calculate(): Int = value
 }
@@ -17,16 +17,20 @@ class Value(private val value: Int, height: Int) : ArithmeticElement(height) {
 abstract class Operation(
     val leftOperand: ArithmeticElement,
     val rightOperand: ArithmeticElement,
-    height: Int
-) : ArithmeticElement(height)
+    val height: Int
+) : ArithmeticElement {
+    abstract val sign: Char
+
+    override fun toString(): String =
+        "${".".repeat(ArithmeticElement.PRINTING_POINTS_COUNT * height)}$sign\n$leftOperand$rightOperand"
+}
 
 class Addition(
     leftOperand: ArithmeticElement,
     rightOperand: ArithmeticElement,
     height: Int
 ) : Operation(leftOperand, rightOperand, height) {
-    override fun getWritten(): String =
-        "${".".repeat(PRINTING_POINTS_COUNT * height)}+\n${leftOperand.getWritten()}${rightOperand.getWritten()}"
+    override val sign: Char = '+'
 
     override fun calculate(): Int = leftOperand.calculate() + rightOperand.calculate()
 }
@@ -36,8 +40,7 @@ class Subtraction(
     rightOperand: ArithmeticElement,
     height: Int
 ) : Operation(leftOperand, rightOperand, height) {
-    override fun getWritten(): String =
-        "${".".repeat(PRINTING_POINTS_COUNT * height)}-\n${leftOperand.getWritten()}${rightOperand.getWritten()}"
+    override val sign: Char = '-'
 
     override fun calculate(): Int = leftOperand.calculate() - rightOperand.calculate()
 }
@@ -47,8 +50,7 @@ class Multiplication(
     rightOperand: ArithmeticElement,
     height: Int
 ) : Operation(leftOperand, rightOperand, height) {
-    override fun getWritten(): String =
-        "${".".repeat(PRINTING_POINTS_COUNT * height)}*\n${leftOperand.getWritten()}${rightOperand.getWritten()}"
+    override val sign: Char = '*'
 
     override fun calculate(): Int = leftOperand.calculate() * rightOperand.calculate()
 }
@@ -58,8 +60,7 @@ class Division(
     rightOperand: ArithmeticElement,
     height: Int
 ) : Operation(leftOperand, rightOperand, height) {
-    override fun getWritten(): String =
-        "${".".repeat(PRINTING_POINTS_COUNT * height)}/\n${leftOperand.getWritten()}${rightOperand.getWritten()}"
+    override val sign: Char = '/'
 
     override fun calculate(): Int = leftOperand.calculate() / rightOperand.calculate()
 }
