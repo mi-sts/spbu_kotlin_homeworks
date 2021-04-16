@@ -42,11 +42,7 @@ class HashTable<K : Any, V>(private var hashFunction: HashFunction<K>) : Mutable
         return removedElement?.value
     }
 
-    override fun containsKey(key: K): Boolean {
-        val hashIndex = getHashIndex(key)
-
-        return buckets[hashIndex].find(key) == null
-    }
+    override fun containsKey(key: K): Boolean = key in keys
 
     override fun containsValue(value: V): Boolean = value in values
 

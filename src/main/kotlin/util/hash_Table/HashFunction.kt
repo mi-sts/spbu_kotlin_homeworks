@@ -7,9 +7,9 @@ interface HashFunction<K> {
     fun hashOf(key: K): Int
 }
 
-object SimpleHashFunction : HashFunction<Any> {
+class SimpleHashFunction<K> : HashFunction<K> {
     override val name: String = "Simple hash function"
-    override fun hashOf(key: Any): Int = key.hashCode()
+    override fun hashOf(key: K): Int = key.hashCode()
 }
 
 object SimpleStringHashFunction : HashFunction<String> {
