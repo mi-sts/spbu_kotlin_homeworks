@@ -14,6 +14,7 @@ import tornadofx.Stylesheet
 import tornadofx.px
 import tornadofx.text
 import tornadofx.launch
+import tornadofx.clear
 
 class TicTacApp : App(GameView::class, GameStyle::class)
 
@@ -50,7 +51,7 @@ class GameFieldView : Fragment("Tic-tac-toe") {
         }
 
     fun clearField() {
-        root.getChildList()?.map { it.hide() }
+        root.clear()
         root = getInitializedField()
     }
 }
