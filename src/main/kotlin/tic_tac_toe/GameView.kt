@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package tic_tac_toe
 
 import javafx.scene.Parent
@@ -9,7 +10,6 @@ import tornadofx.vbox
 import tornadofx.hbox
 import tornadofx.button
 import tornadofx.label
-import tornadofx.style
 import tornadofx.Stylesheet
 import tornadofx.px
 import tornadofx.text
@@ -81,7 +81,7 @@ class GameOverView(
     }
 }
 
-class GameStyle: Stylesheet() {
+class GameStyle : Stylesheet() {
     init {
         button {
             fontSize = 25.px
