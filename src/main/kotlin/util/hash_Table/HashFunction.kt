@@ -7,17 +7,17 @@ interface HashFunction<K> {
     fun hashOf(key: K): Int
 }
 
-object SimpleHashFunction: HashFunction<Any> {
+object SimpleHashFunction : HashFunction<Any> {
     override val name: String = "Simple hash function"
     override fun hashOf(key: Any): Int = key.hashCode()
 }
 
-object SimpleStringHashFunction: HashFunction<String> {
+object SimpleStringHashFunction : HashFunction<String> {
     override val name: String = "Simple string hash function"
     override fun hashOf(key: String): Int = key.sumOf { it.toInt() }
 }
 
-object PolynomialHashFunction: HashFunction<String> {
+object PolynomialHashFunction : HashFunction<String> {
     override val name: String = "Polynomial hash function"
     private const val POLYNOMIAL_VALUE = 13
     override fun hashOf(key: String): Int {

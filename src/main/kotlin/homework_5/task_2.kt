@@ -4,17 +4,17 @@ import homework_1.UserOption
 import util.hash_Table.HashTable
 import util.hash_Table.SimpleStringHashFunction
 
-object UserInterface {
-    enum class AvailableActions(val value: Char) {
-        ADD('1'), REMOVE('2'), FIND('3'), SHOW_STATISTICS('4'), LOAD('5'),
-        CHANGE_HASH_FUNCTION('6'), EXIT('7');
+private enum class AvailableActions(val value: Char) {
+    ADD('1'), REMOVE('2'), FIND('3'), SHOW_STATISTICS('4'), LOAD('5'),
+    CHANGE_HASH_FUNCTION('6'), EXIT('7');
 
-        companion object {
-            val actionsIndices: List<Int>
-                get() = UserOption.values().map { it.value.toString().toInt() }
-        }
+    companion object {
+        val actionsIndices: List<Int>
+            get() = UserOption.values().map { it.value.toString().toInt() }
     }
+}
 
+private object UserInterface {
     private fun getActionChoice(): Char {
         var input = readLine()?.toIntOrNull() ?: 0
         while (input !in AvailableActions.actionsIndices) {

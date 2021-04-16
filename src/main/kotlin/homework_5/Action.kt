@@ -6,10 +6,9 @@ import util.Input
 import util.hash_Table.HashTable
 import util.hash_Table.SimpleStringHashFunction
 import util.hash_Table.PolynomialHashFunction
-import util.hash_Table.SimpleHashFunction
 import java.io.File
 
-interface Action {
+private interface Action {
     var name: String
     fun apply(hashTable: HashTable<String, String>)
 }
@@ -87,7 +86,6 @@ object ChangeHashFunctionAction : Action {
                 "Enter the number in a given range!", Input.NumberType.INTEGER, true
             ).toInt()
         }
-        
         return choiceNumber
     }
 
@@ -95,4 +93,3 @@ object ChangeHashFunctionAction : Action {
         hashTable.changeHashFunction(hashFunction = hashFunctions[getHashFunctionNumber()])
     }
 }
-

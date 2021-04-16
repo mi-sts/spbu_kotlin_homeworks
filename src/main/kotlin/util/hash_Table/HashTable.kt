@@ -1,6 +1,7 @@
 package util.hash_Table
 
-class HashTable<K: Any, V>(private var hashFunction: HashFunction<K>) : MutableMap<K, V> {
+@Suppress("TooManyFunctions")
+class HashTable<K : Any, V>(private var hashFunction: HashFunction<K>) : MutableMap<K, V> {
     companion object { private const val MAX_LOAD_FACTOR = 0.7f }
     private var buckets = Array<HashBucket<K, V>>(1) { HashBucket() }
 
@@ -24,8 +25,7 @@ class HashTable<K: Any, V>(private var hashFunction: HashFunction<K>) : MutableM
     private fun getHashIndex(key: K) = hashFunction.hashOf(key) % buckets.count()
 
     override fun put(key: K, value: V): V? {
-        if (loadFactor >= MAX_LOAD_FACTOR)
-            expandTable()
+        if (loadFactor >= MAX_LOAD_FACTOR) expandTable()
 
         val hashIndex = getHashIndex(key)
         val oldElement = buckets[hashIndex].add(HashElement(key, value))
