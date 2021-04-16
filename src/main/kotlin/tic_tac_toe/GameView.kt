@@ -50,7 +50,7 @@ class GameFieldView : Fragment("Tic-tac-toe") {
         }
 
     fun clearField() {
-        root.clear()
+        root.getChildList()?.map { it.hide() }
         root = getInitializedField()
     }
 }
