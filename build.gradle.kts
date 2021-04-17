@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.4.31"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jetbrains.dokka") version "1.4.20"
+    id("org.openjfx.javafxplugin") version "0.0.9"
     kotlin("plugin.serialization") version "1.4.31"
     application
 }
@@ -29,6 +30,17 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")
+
+    implementation("no.tornado:tornadofx:1.7.20")
+    implementation("org.openjfx:javafx-base:11.0.2")
+    implementation("org.openjfx:javafx:11.0.2")
+    implementation("org.openjfx:javafx-controls:11.0.2")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
+}
+
+javafx {
+    version = "11"
+    modules("javafx.controls")
 }
 
 tasks.dokkaHtml.configure {
@@ -73,7 +85,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = listOf("-Werror")
     }
 }
