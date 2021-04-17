@@ -11,7 +11,6 @@ object MultithreadedMergeSort {
         private var sortedList: List<K>? = null
 
         override fun run() {
-            println(list)
             val mid = list.count() / 2
             val leftList = list.slice(0 until mid)
             val rightList = list.slice(mid..list.lastIndex)
