@@ -5,13 +5,17 @@ import java.lang.IllegalArgumentException
 import kotlin.random.Random
 import kotlin.system.measureNanoTime
 
-fun getSortStaticsDependingOnThreads(numberOfElements: Int, threadsRange: IntRange, threadsStep: Int,
-                                     numberOfRepetitions: Int): Map<Int, Double> {
+fun getSortStaticsDependingOnThreads(
+    numberOfElements: Int,
+    threadsRange: IntRange,
+    threadsStep: Int,
+    approximationStepsNumber: Int
+): Map<Int, Double> {
     if (threadsRange.first <= 0) throw IllegalArgumentException("The number of threads should be positive!")
     if (numberOfElements <= 0) throw IllegalArgumentException("The number of sorting elements should be positive!")
 
     val generalTimeData: MutableMap<Int, Long> = mutableMapOf()
-    repeat(numberOfRepetitions) {
+    repeat(approximationStepsNumber) {
         for (i in threadsRange step threadsStep) {
             val elements = List(numberOfElements) { Random.nextInt() }
             val elapsedTime = measureNanoTime {
@@ -21,16 +25,20 @@ fun getSortStaticsDependingOnThreads(numberOfElements: Int, threadsRange: IntRan
         }
     }
 
-    return generalTimeData.mapValues { it.value / numberOfRepetitions.toDouble() }
+    return generalTimeData.mapValues { it.value / approximationStepsNumber.toDouble() }
 }
 
-fun getSortStaticsDependingOnElementsNumber(numberOfThreads: Int, elementsRange: IntRange, elementsStep: Int,
-                                            numberOfRepetitions: Int): Map<Int, Double> {
+fun getSortStaticsDependingOnElementsNumber(
+    numberOfThreads: Int,
+    elementsRange: IntRange,
+    elementsStep: Int,
+    approximationStepsNumber: Int
+): Map<Int, Double> {
     if (elementsRange.first <= 0) throw IllegalArgumentException("The number of elements should be positive!")
     if (numberOfThreads <= 0) throw IllegalArgumentException("The number of threads should be positive!")
 
     val generalTimeData: MutableMap<Int, Long> = mutableMapOf()
-    repeat(numberOfRepetitions) {
+    repeat(approximationStepsNumber) {
         for (i in elementsRange step elementsStep) {
             val elements = List(i) { Random.nextInt() }
             val elapsedTime = measureNanoTime {
@@ -40,5 +48,5 @@ fun getSortStaticsDependingOnElementsNumber(numberOfThreads: Int, elementsRange:
         }
     }
 
-    return generalTimeData.mapValues { it.value / numberOfRepetitions.toDouble() }
+    return generalTimeData.mapValues { it.value / approximationStepsNumber.toDouble() }
 }
