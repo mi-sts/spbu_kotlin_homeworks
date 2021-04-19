@@ -11,18 +11,10 @@ internal class MergeSortTest {
     companion object {
         @JvmStatic
         fun numbersList(): List<Arguments> = listOf(
-            Arguments.of(
-                emptyList<Int>()
-            ),
-            Arguments.of(
-                listOf(1)
-            ),
-            Arguments.of(
-                listOf(3, 1, 2)
-            ),
-            Arguments.of(
-                listOf(-4, 5, 12, 0, 89, 44, 13, 7, 6, 3, 7)
-            )
+            Arguments.of(emptyList<Int>()),
+            Arguments.of(listOf(1)),
+            Arguments.of(listOf(3, 1, 2)),
+            Arguments.of(listOf(-4, 5, 12, 0, 89, 44, 13, 7, 6, 3, 7))
         )
 
         @JvmStatic
