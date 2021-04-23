@@ -5,14 +5,15 @@ package storages
 import kotlin.math.max
 
 data class AVLNode <K : Comparable<K>, V> (
-    override var key: K,
-    override var value: V,
-    private var leftChild: AVLNode<K, V>? = null,
-    private var rightChild: AVLNode<K, V>? = null
+    override val key: K,
+    override val value: V,
 ) : MutableMap.MutableEntry<K, V> {
-    companion object {
-        const val BALANCE_COEFFICIENT = 2
-    }
+    companion object { const val BALANCE_COEFFICIENT = 2 }
+
+    private var leftChild: AVLNode<K, V>? = null
+    private var rightChild: AVLNode<K, V>? = null
+
+    private var _value = value
 
     private var height = 1
 
@@ -30,7 +31,7 @@ data class AVLNode <K : Comparable<K>, V> (
 
     private fun hasOneChild() = (leftChild == null && rightChild != null) || (leftChild != null && rightChild == null)
 
-    private fun rotateLeft(): AVLNode<K, V> {
+    private fun leftRotation(): AVLNode<K, V> {
         val pivot = rightChild!!
 
         rightChild = pivot.leftChild
@@ -42,7 +43,7 @@ data class AVLNode <K : Comparable<K>, V> (
         return pivot
     }
 
-    private fun rotateRight(): AVLNode<K, V> {
+    private fun rightRotation(): AVLNode<K, V> {
         val pivot = leftChild!!
 
         leftChild = pivot.rightChild
@@ -54,34 +55,34 @@ data class AVLNode <K : Comparable<K>, V> (
         return pivot
     }
 
-    private fun rotateRightLeft(): AVLNode<K, V> {
+    private fun bigRightRotation(): AVLNode<K, V> {
         rightChild ?: return this
-        rightChild = rightChild!!.rotateRight()
+        rightChild = rightChild!!.rightRotation()
 
-        return rotateLeft()
+        return leftRotation()
     }
 
-    private fun rotateLeftRight(): AVLNode<K, V> {
+    private fun bigLeftRotation(): AVLNode<K, V> {
         leftChild ?: return this
-        leftChild = leftChild!!.rotateLeft()
+        leftChild = leftChild!!.leftRotation()
 
-        return rotateRight()
+        return rightRotation()
     }
 
     private fun balance(): AVLNode<K, V> {
         return when (balanceFactor()) {
             BALANCE_COEFFICIENT -> {
                 if (rightChild?.balanceFactor() == -1) {
-                    rotateRightLeft()
+                    bigRightRotation()
                 } else {
-                    rotateLeft()
+                    leftRotation()
                 }
             }
             -BALANCE_COEFFICIENT -> {
                 if (leftChild?.balanceFactor() == 1) {
-                    rotateLeftRight()
+                    bigLeftRotation()
                 } else {
-                    rotateRight()
+                    rightRotation()
                 }
             }
             else -> this
@@ -92,7 +93,7 @@ data class AVLNode <K : Comparable<K>, V> (
        when {
             key < this.key -> leftChild = leftChild?.insertNode(key, value) ?: AVLNode(key, value)
             key > this.key -> rightChild = rightChild?.insertNode(key, value) ?: AVLNode(key, value)
-            else -> this.apply { this.value = value }
+            else -> this.apply { _value = value }
         }
 
         updateHeight()
@@ -100,8 +101,8 @@ data class AVLNode <K : Comparable<K>, V> (
     }
 
     private fun getMinNodeFromBranch(): AVLNode<K, V> {
-        var currentVertex: AVLNode<K, V>? = this
-        while (currentVertex!!.leftChild != null) currentVertex = currentVertex.leftChild
+        var currentVertex: AVLNode<K, V> = this
+        while (currentVertex.leftChild != null) currentVertex = currentVertex.leftChild!!
 
         return currentVertex
     }
@@ -148,7 +149,7 @@ data class AVLNode <K : Comparable<K>, V> (
     }
 
     fun getWrittenInDirectOrder(): String {
-        val nodeElement = "($key -> $value) "
+        val nodeElement = "($key -> $_value) "
         return when {
             isLeaf() -> nodeElement
             hasOneChild() ->
@@ -158,5 +159,5 @@ data class AVLNode <K : Comparable<K>, V> (
         }
     }
 
-    override fun setValue(newValue: V): V = value.also { value = newValue }
+    override fun setValue(newValue: V): V = _value.also { _value = newValue }
 }

@@ -11,12 +11,8 @@ internal class AVLTreeTest {
     companion object {
         @JvmStatic
         fun testAddingElements(): List<Arguments> = listOf(
-            Arguments.of(
-                mapOf(1 to "a")
-            ),
-            Arguments.of(
-                mapOf(1 to "a", 2 to "b", 3 to "c"),
-            )
+            Arguments.of(mapOf(1 to "a")),
+            Arguments.of(mapOf(1 to "a", 2 to "b", 3 to "c"))
         )
 
         @JvmStatic
