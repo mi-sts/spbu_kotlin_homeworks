@@ -1,4 +1,4 @@
-package util.sorts
+package homework_6.task_1.sorts
 
 object MergeSort {
     fun <T : Comparable<T>> merge(leftList: List<T>?, rightList: List<T>?): List<T> {

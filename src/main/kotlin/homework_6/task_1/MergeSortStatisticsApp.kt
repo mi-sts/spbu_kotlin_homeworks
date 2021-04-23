@@ -1,16 +1,11 @@
 @file:Suppress("MagicNumber")
 package homework_6.task_1
 
-import homework_6.getSortStaticsDependingOnElementsNumber
-import homework_6.getSortStaticsDependingOnThreads
 import javafx.geometry.Orientation
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
-import javafx.scene.control.Label
-import javafx.scene.control.Slider
-import javafx.scene.control.TextField
-import javafx.scene.control.ToggleGroup
+import javafx.scene.control.*
 import tornadofx.App
 import tornadofx.View
 import tornadofx.data
@@ -31,76 +26,90 @@ import kotlin.math.max
 class MergeSortStatisticsApp : App(StatisticsChartView::class)
 
 class StatisticsChartView : View("Merge Sort Statistics") {
-    private val elementsSliderMaxValue = 100000
-    private val threadsSliderMaxValue = 1000
+    companion object {
+        private const val ELEMENTS_SLIDER_MAX_VALUE = 100000
+        private const val THREADS_SLIDER_MAX_VALUE = 1000
+        private const val APPROXIMATION_STEPS_NUMBER = 3
+    }
 
-    private var statisticsChart: LineChart<Number, Number>? = null
-    private var statisticsSeries: XYChart.Series<Number, Number>? = null
+    private lateinit var statisticsChart: LineChart<Number, Number>
+    private lateinit var statisticsSeries: XYChart.Series<Number, Number>
 
-    private var isElementsMode = true
+    private lateinit var constantVariableLabel: Label
+    private lateinit var constantVariableTextField: TextField
+
+    private lateinit var dependentVariableLabel: Label
+    private lateinit var dependentVariableSlider: Slider
+
     private val modeToggleGroup = ToggleGroup()
+
+    private lateinit var elementsModeRadioButton: RadioButton
+    private lateinit var threadsModeRadioButton: RadioButton
+
+    private var currentMode = Mode.ELEMENTS_MODE
     private var isModeChosen = false
 
     private var elementsLabel = "Elements"
     private var threadsLabel = "Threads"
 
-    private var constantVariableLabel: Label? = null
-    private var constantVariableTextField: TextField? = null
-
-    private var dependentVariableLabel: Label? = null
-    private var dependentVariableSlider: Slider? = null
-
-    private fun clearStatisticsChart() = statisticsSeries?.data?.clear()
-
     private val constantVariableValue: Int
-        get() = constantVariableTextField?.text?.toIntOrNull() ?: 1
+        get() = constantVariableTextField.text?.toIntOrNull() ?: 1
 
     private val dependentVariableValue: Int
-        get() = dependentVariableSlider?.value?.toInt() ?: 1
+        get() = dependentVariableSlider.value.toInt()
+
+    private fun clearStatisticsChart() = statisticsSeries.data?.clear()
 
     private fun changeChartValues(newValues: Map<Int, Double>) =
-        newValues.forEach { statisticsSeries?.data(it.key, it.value) }
+        newValues.forEach { statisticsSeries.data(it.key, it.value) }
 
     private fun updateLabelsText() {
-        if (isElementsMode) {
-            dependentVariableLabel?.text = elementsLabel
-            constantVariableLabel?.text = threadsLabel
-        } else {
-            dependentVariableLabel?.text = threadsLabel
-            constantVariableLabel?.text = elementsLabel
+        when (currentMode) {
+            Mode.ELEMENTS_MODE -> {
+                dependentVariableLabel.text = elementsLabel
+                constantVariableLabel.text = threadsLabel
+            }
+            Mode.THREADS_MODE -> {
+                dependentVariableLabel.text = threadsLabel
+                constantVariableLabel.text = elementsLabel
+            }
         }
     }
 
     private fun updateChart() {
         clearStatisticsChart()
         val dependentRange = 1..dependentVariableValue
-        val approximationStepsNumber = 3
         val numberOfSteps = max(dependentRange.count() / 100, 1)
 
-        val statisticsMap =
-            if (!isElementsMode) {
-                statisticsSeries?.chart?.xAxis?.label = "Threads"
-                statisticsSeries?.chart?.yAxis?.label = "Nanoseconds"
-                getSortStaticsDependingOnThreads(
-                    constantVariableValue, dependentRange, numberOfSteps, approximationStepsNumber)
-            } else {
-                statisticsSeries?.chart?.xAxis?.label = "Elements"
-                statisticsSeries?.chart?.yAxis?.label = "Nanoseconds"
-                getSortStaticsDependingOnElementsNumber(
-                    constantVariableValue, dependentRange, numberOfSteps, approximationStepsNumber)
+        when (currentMode) {
+            Mode.ELEMENTS_MODE -> {
+                statisticsSeries.chart?.xAxis?.label = "Elements"
+                statisticsSeries.chart?.yAxis?.label = "Nanoseconds"
             }
+            Mode.THREADS_MODE -> {
+                statisticsSeries.chart?.xAxis?.label = "Threads"
+                statisticsSeries.chart?.yAxis?.label = "Nanoseconds"
+            }
+        }
+
+        val statisticsMap =
+            getSortStatics(constantVariableValue, dependentRange, numberOfSteps, APPROXIMATION_STEPS_NUMBER,
+                currentMode)
 
         changeChartValues(statisticsMap)
     }
 
     private fun updateSliderRange() {
-        if (isElementsMode) {
-            dependentVariableSlider?.min = 1.0
-            dependentVariableSlider?.max = elementsSliderMaxValue.toDouble()
-            dependentVariableSlider?.majorTickUnit = elementsSliderMaxValue / 1000.0
-        } else {
-            dependentVariableSlider?.min = 1.0
-            dependentVariableSlider?.max = threadsSliderMaxValue.toDouble()
+        when (currentMode) {
+            Mode.ELEMENTS_MODE -> {
+                dependentVariableSlider.min = 1.0
+                dependentVariableSlider.max = ELEMENTS_SLIDER_MAX_VALUE.toDouble()
+                dependentVariableSlider.majorTickUnit = ELEMENTS_SLIDER_MAX_VALUE / 1000.0
+            }
+            Mode.THREADS_MODE -> {
+                dependentVariableSlider.min = 1.0
+                dependentVariableSlider.max = THREADS_SLIDER_MAX_VALUE.toDouble()
+            }
         }
     }
 
@@ -110,11 +119,11 @@ class StatisticsChartView : View("Merge Sort Statistics") {
         updateChart()
     }
 
-    private fun onModeButtonPressed(isElementsModeButton: Boolean) {
-        if (isModeChosen && isElementsMode == isElementsModeButton) return
+    private fun onModeButtonPressed(modeOfButton: Mode) {
+        if (isModeChosen && currentMode == modeOfButton) return
 
         isModeChosen = true
-        isElementsMode = isElementsModeButton
+        currentMode = modeOfButton
         onModeChanged()
     }
 
@@ -142,11 +151,21 @@ class StatisticsChartView : View("Merge Sort Statistics") {
             }
             hbox {
                 updateSliderRange()
-                radiobutton("Threads mode", modeToggleGroup) {
-                    action { onModeButtonPressed(false) }
+                threadsModeRadioButton = radiobutton("Threads mode", modeToggleGroup) {
+                    action { onModeButtonPressed(Mode.THREADS_MODE) }
                 }
-                radiobutton("Elements mode", modeToggleGroup) {
-                    action { onModeButtonPressed(true) }
+                elementsModeRadioButton = radiobutton("Elements mode", modeToggleGroup) {
+                    action { onModeButtonPressed(Mode.ELEMENTS_MODE) }
+                }
+                when (currentMode) {
+                    Mode.ELEMENTS_MODE -> {
+                        modeToggleGroup.selectToggle(elementsModeRadioButton)
+                        onModeButtonPressed(Mode.ELEMENTS_MODE)
+                    }
+                    Mode.THREADS_MODE -> {
+                        modeToggleGroup.selectToggle(threadsModeRadioButton)
+                        onModeButtonPressed(Mode.THREADS_MODE)
+                    }
                 }
             }
             updateLabelsText()

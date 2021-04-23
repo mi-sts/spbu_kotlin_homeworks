@@ -1,11 +1,12 @@
-package util.sorts
+package homework_6.task_1.sorts
 
+import homework_6.task_1.sorts.MergeSort.merge
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import util.sorts.MergeSort.merge
-import util.sorts.MergeSort.mergeSorted
+import homework_6.task_1.sorts.MergeSort.mergeSorted
+import homework_6.task_1.sorts.MultithreadedMergeSort.multithreadedMerge
 
 internal class MergeSortTest {
     companion object {
@@ -43,6 +44,13 @@ internal class MergeSortTest {
     fun mergeTest(firstList: List<Int>, secondList: List<Int>) {
         val mergedList = firstList.plus(secondList).sorted()
         assertEquals(mergedList, merge(firstList, secondList))
+    }
+
+    @MethodSource("sortedLists")
+    @ParameterizedTest(name = "multithreadedMergeTest{index}")
+    fun multithreadedMergeTest(firstList: List<Int>, secondList: List<Int>) {
+        val mergedList = firstList.plus(secondList).sorted()
+        assertEquals(mergedList, multithreadedMerge(firstList, secondList))
     }
 
     @MethodSource("numbersList")
