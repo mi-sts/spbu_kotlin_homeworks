@@ -96,7 +96,7 @@ object MultithreadedMergeSort {
                     mergedList?.add(maxMidValue)
                     mergedList?.addAll(rightMergedList)
                 }
-                maxList.isNotEmpty() && numberOfAvailableThreads < 2 -> mergedList = merge(leftList, rightList)
+                numberOfAvailableThreads < 2 -> mergedList = merge(leftList, rightList)
             }
         }
 
@@ -111,8 +111,11 @@ object MultithreadedMergeSort {
         return sortRunnable.getSorted()
     }
 
-    fun <T : Comparable<T>> multithreadedMerge(leftList: MutableList<T>?, rightList: MutableList<T>?,
-                                               numberOfThreads: Int): MutableList<T>? {
+    fun <T : Comparable<T>> multithreadedMerge(
+        leftList: MutableList<T>?,
+        rightList: MutableList<T>?,
+        numberOfThreads: Int
+    ): MutableList<T>? {
         val mergeRunnable = MergeThreadRunnable(leftList, rightList, numberOfThreads)
         val mergeThread = Thread(mergeRunnable)
         mergeThread.run()

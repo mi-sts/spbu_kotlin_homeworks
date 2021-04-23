@@ -1,11 +1,17 @@
 @file:Suppress("MagicNumber")
 package homework_6.task_1
 
+import homework_6.task_1.MergeSortStatistics.Mode
+import homework_6.task_1.MergeSortStatistics.getSortStatics
 import javafx.geometry.Orientation
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.control.RadioButton
+import javafx.scene.control.Slider
+import javafx.scene.control.ToggleGroup
 import tornadofx.App
 import tornadofx.View
 import tornadofx.data
