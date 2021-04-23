@@ -8,7 +8,7 @@ enum class Mode {
     ELEMENTS_MODE, THREADS_MODE
 }
 
-private fun getRandomNumberList(numbersCount: Int) = List(numbersCount) { Random.nextInt() }
+private fun getRandomNumberList(numbersCount: Int) = MutableList(numbersCount) { Random.nextInt() }
 
 fun getSortStatics(
     constVarMembersCount: Int,

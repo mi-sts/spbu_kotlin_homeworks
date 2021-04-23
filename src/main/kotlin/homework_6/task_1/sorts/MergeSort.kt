@@ -1,10 +1,10 @@
 package homework_6.task_1.sorts
 
 object MergeSort {
-    fun <T : Comparable<T>> merge(leftList: List<T>?, rightList: List<T>?): List<T> {
-        if (leftList == null || rightList == null) return emptyList()
+    fun <T : Comparable<T>> merge(leftList: MutableList<T>?, rightList: MutableList<T>?): MutableList<T> {
+        if (leftList == null || rightList == null) return mutableListOf()
 
-        var mergedList: MutableList<T> = mutableListOf()
+        val mergedList: MutableList<T> = mutableListOf()
 
         var leftCounter = 0
         var rightCounter = 0
@@ -18,19 +18,17 @@ object MergeSort {
             }
         }
 
-        if (leftCounter < leftList.count()) mergedList = mergedList
-            .plus(leftList.subList(leftCounter, leftList.count())).toMutableList()
-        if (rightCounter < rightList.count()) mergedList = mergedList
-            .plus(rightList.subList(rightCounter, rightList.count())).toMutableList()
+        if (leftCounter < leftList.count()) mergedList.addAll(leftList.subList(leftCounter, leftList.count()))
+        if (rightCounter < rightList.count()) mergedList.addAll(rightList.subList(rightCounter, rightList.count()))
 
         return mergedList
     }
 
-    fun <T : Comparable<T>> List<T>.mergeSorted(): List<T> {
+    fun <T : Comparable<T>> MutableList<T>.mergeSorted(): MutableList<T> {
         return if (count() < 2) this else {
             val mid = count() / 2
-            val leftList = slice(0 until mid)
-            val rightList = slice(mid..lastIndex)
+            val leftList = subList(0, mid)
+            val rightList = subList(mid, count())
 
             merge(leftList.mergeSorted(), rightList.mergeSorted())
         }
