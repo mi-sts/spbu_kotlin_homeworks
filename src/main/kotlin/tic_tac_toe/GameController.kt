@@ -1,18 +1,18 @@
 package tic_tac_toe
 
-import tic_tac_toe.Bots.SimpleBot
+import tic_tac_toe.bots.HardBot
 import tornadofx.Controller
 import java.lang.NullPointerException
 import kotlin.random.Random
 
 class GameController(private val gameView: GameView) : Controller() {
-    enum class PlayerType {
+    private enum class PlayerType {
         PLAYER, BOT
     }
 
     private var currentPlayerType = PlayerType.PLAYER
     private val gameModel = GameModel()
-    private val bot = SimpleBot(CellType.NOUGHT, gameModel)
+    private val bot = HardBot(CellType.NOUGHT, gameModel)
 
     private fun markCell(xPos: Int, yPos: Int): CellType? {
         val markedCellType = gameModel.markCell(Position(xPos, yPos))

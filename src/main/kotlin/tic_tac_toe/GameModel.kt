@@ -36,19 +36,19 @@ class GameModel {
         return true
     }
 
-    private fun getRow(index: Int): List<CellType> {
+    fun getRow(index: Int): List<CellType> {
         require(isCoordinateExist(index)) { IndexOutOfBoundsException("The row index out of field bounds!") }
 
         return field[index].toList()
     }
 
-    private fun getColumn(index: Int): List<CellType> {
+    fun getColumn(index: Int): List<CellType> {
         require(isCoordinateExist(index)) { IndexOutOfBoundsException("The column index out of field bounds!") }
 
         return field.map { it[index] }
     }
 
-    private fun getDiagonals(): Pair<List<CellType>, List<CellType>> =
+    fun getDiagonals(): Pair<List<CellType>, List<CellType>> =
         Pair(field.mapIndexed { index, _ -> field[index][index] },
             field.mapIndexed { index, _ -> field[index][FIELD_RANGE.count() - 1 - index] })
 

@@ -1,4 +1,4 @@
-package tic_tac_toe.Bots
+package tic_tac_toe.bots
 
 import tic_tac_toe.CellType
 import tic_tac_toe.GameModel
@@ -19,7 +19,7 @@ abstract class Bot(private val botCellType: CellType, private val gameModel: Gam
         return cellsNumber
     }
 
-    protected fun getFreePositions(): List<Position> {
+    protected fun getEmptyPositions(): List<Position> {
         val freePositions = mutableListOf<Position>()
         for (x in FIELD_RANGE)
             for (y in FIELD_RANGE) {

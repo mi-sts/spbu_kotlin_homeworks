@@ -1,4 +1,4 @@
-package tic_tac_toe.Bots
+package tic_tac_toe.bots
 
 import tic_tac_toe.CellType
 import tic_tac_toe.GameModel
@@ -6,10 +6,9 @@ import tic_tac_toe.Position
 
 class SimpleBot(botCellType: CellType, gameModel: GameModel) : Bot(botCellType, gameModel) {
     override fun makeDecision(): Position? {
-        if (!isBotStep()) return null
-        val freePositions = getFreePositions()
+        val emptyPositions = getEmptyPositions()
+        if (!isBotStep() || emptyPositions.isEmpty()) return null
 
-        if (freePositions.isEmpty()) return null
-        return freePositions.random()
+        return emptyPositions.random()
     }
 }
