@@ -1,13 +1,15 @@
 package tic_tac_toe
 
-import tic_tac_toe.GameController.Companion.FIELD_RANGE
-
 enum class CellType {
     EMPTY, CROSS, NOUGHT
 }
 
+data class Position(val x: Int, val y: Int)
+
 @Suppress("TooManyFunctions")
 class GameModel {
+    companion object { val FIELD_RANGE = 0..2 }
+
     private var currentCellType = CellType.CROSS
     private var gameOver = false
     private var winner: CellType? = null
@@ -15,35 +17,35 @@ class GameModel {
     private var field =
         MutableList(FIELD_RANGE.count()) { MutableList(FIELD_RANGE.count()) { CellType.EMPTY } }
 
-    private fun canChange(xPos: Int, yPos: Int) = !gameOver && getCell(xPos, yPos) == CellType.EMPTY &&
-            isPositionsExist(xPos, yPos)
+    private fun canChange(position: Position) = !gameOver && getCell(position) == CellType.EMPTY &&
+            isPositionExist(position)
 
-    private fun isPositionExist(position: Int) = position in FIELD_RANGE
+    private fun isCoordinateExist(coordinate: Int) = coordinate in FIELD_RANGE
 
-    private fun isPositionsExist(xPos: Int, yPos: Int) = isPositionExist(xPos) && isPositionExist(yPos)
+    private fun isPositionExist(position: Position) = isCoordinateExist(position.x) && isCoordinateExist(position.y)
 
     private fun haveEmptyCells() = CellType.EMPTY in field.flatten()
 
-    private fun getCell(xPos: Int, yPos: Int): CellType? =
-        if (isPositionExist(xPos) && isPositionExist(yPos)) field[yPos][xPos] else null
+    fun getCell(position: Position): CellType? =
+        if (isPositionExist(position)) field[position.y][position.x] else null
 
-    private fun setCell(xPos: Int, yPos: Int, cellType: CellType): Boolean {
-        if (!isPositionsExist(xPos, yPos)) return false
+    private fun setCell(position: Position, cellType: CellType): Boolean {
+        if (!isPositionExist(position)) return false
 
-        field[yPos][xPos] = cellType
+        field[position.y][position.x] = cellType
         return true
     }
 
-    private fun getRow(position: Int): List<CellType> {
-        require(isPositionExist(position)) { IndexOutOfBoundsException("The row position out of field bounds!") }
+    private fun getRow(index: Int): List<CellType> {
+        require(isCoordinateExist(index)) { IndexOutOfBoundsException("The row index out of field bounds!") }
 
-        return field[position].toList()
+        return field[index].toList()
     }
 
-    private fun getColumn(position: Int): List<CellType> {
-        require(isPositionExist(position)) { IndexOutOfBoundsException("The column position out of field bounds!") }
+    private fun getColumn(index: Int): List<CellType> {
+        require(isCoordinateExist(index)) { IndexOutOfBoundsException("The column index out of field bounds!") }
 
-        return field.map { it[position] }
+        return field.map { it[index] }
     }
 
     private fun getDiagonals(): Pair<List<CellType>, List<CellType>> =
@@ -53,21 +55,20 @@ class GameModel {
     private fun clear() {
         for (x in FIELD_RANGE)
             for (y in FIELD_RANGE)
-                setCell(x, y, CellType.EMPTY)
+                setCell(Position(x, y), CellType.EMPTY)
     }
 
     private fun changeCurrentCellType() {
         currentCellType = if (currentCellType == CellType.CROSS) CellType.NOUGHT else CellType.CROSS
     }
 
-    fun markCell(xPos: Int, yPos: Int): CellType? {
-        if (!canChange(xPos, yPos)) return null
-        changeCurrentCellType()
-        setCell(xPos, yPos, currentCellType)
-        val winner = winCheck(xPos, yPos)
+    fun markCell(position: Position): CellType? {
+        if (!canChange(position)) return null
+        setCell(position, currentCellType)
+        val winner = winCheck(position)
         if (winner != null) gameOver(winner)
 
-        return currentCellType
+        return currentCellType.also { changeCurrentCellType() }
     }
 
     private fun getTypeCells(type: CellType): List<CellType> = List(FIELD_RANGE.count()) { type }
@@ -79,22 +80,24 @@ class GameModel {
             else -> null
         }
 
-    private fun isDiagonalsPosition(xPos: Int, yPos: Int) =
-        (xPos == yPos) || ((xPos + yPos) == (FIELD_RANGE.count() - 1))
+    private fun isDiagonalsPosition(position: Position) =
+        (position.x == position.y) || ((position.x + position.y) == (FIELD_RANGE.count() - 1))
 
-    private fun winCheck(chosenCellXPos: Int, chosenCellYPos: Int): CellType? {
+    private fun winCheck(chosenPosition: Position): CellType? {
         var winner: CellType? = null
-        val horizontalWinner = checkCellsWinner(getRow(chosenCellYPos))
-        val verticalWinner = checkCellsWinner(getColumn(chosenCellXPos))
+        val horizontalWinner = checkCellsWinner(getRow(chosenPosition.y))
+        val verticalWinner = checkCellsWinner(getColumn(chosenPosition.x))
 
         if (horizontalWinner != null) winner = horizontalWinner
         else if (verticalWinner != null) winner = verticalWinner
-        else if (isDiagonalsPosition(chosenCellXPos, chosenCellYPos)) {
+        else if (isDiagonalsPosition(chosenPosition)) {
             val diagonals = getDiagonals()
             val diagonalsWinners = Pair(checkCellsWinner(diagonals.first), checkCellsWinner(diagonals.second))
             if (diagonalsWinners.first != null) winner = diagonalsWinners.first
             else if (diagonalsWinners.second != null) winner = diagonalsWinners.second
-        } else if (!haveEmptyCells()) winner = CellType.EMPTY
+        }
+
+        if (!haveEmptyCells() && winner == null) winner = CellType.EMPTY
 
         return winner
     }

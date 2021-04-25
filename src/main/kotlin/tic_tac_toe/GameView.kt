@@ -3,7 +3,7 @@ package tic_tac_toe
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.text.FontWeight
-import tic_tac_toe.GameController.Companion.FIELD_RANGE
+import tic_tac_toe.GameModel.Companion.FIELD_RANGE
 import tic_tac_toe.GameView.Companion.CELL_SIZE
 import tornadofx.App
 import tornadofx.View
@@ -41,7 +41,7 @@ class GameView : View("Tic-tac-toe") {
                 for (x in FIELD_RANGE) {
                     cells[y].add(button(" ") {
                         setPrefSize(CELL_SIZE, CELL_SIZE)
-                        action { gameController.markCell(x, y) } })
+                        action { gameController.playerStep(x, y) } })
                 }
             }
         }
