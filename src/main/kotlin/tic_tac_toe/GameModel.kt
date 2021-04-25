@@ -2,20 +2,18 @@ package tic_tac_toe
 
 import tic_tac_toe.GameController.Companion.FIELD_RANGE
 
-private var currentCellType = CellType.CROSS
-private var gameOver = false
-private var winner: CellType? = null
-
 enum class CellType {
     EMPTY, CROSS, NOUGHT
 }
 
 @Suppress("TooManyFunctions")
 class GameModel {
+    private var currentCellType = CellType.CROSS
+    private var gameOver = false
+    private var winner: CellType? = null
+
     private var field =
-        MutableList(FIELD_RANGE.count()) {
-            MutableList(FIELD_RANGE.count()) { CellType.EMPTY }
-        }
+        MutableList(FIELD_RANGE.count()) { MutableList(FIELD_RANGE.count()) { CellType.EMPTY } }
 
     private fun canChange(xPos: Int, yPos: Int) = !gameOver && getCell(xPos, yPos) == CellType.EMPTY &&
             isPositionsExist(xPos, yPos)
