@@ -1,96 +1,95 @@
-@file:Suppress("MagicNumber")
 package tic_tac_toe
 
-import javafx.scene.Parent
+import javafx.geometry.Pos
+import javafx.scene.control.Button
 import javafx.scene.text.FontWeight
-import tornadofx.App
-import tornadofx.View
-import tornadofx.Fragment
-import tornadofx.vbox
-import tornadofx.hbox
-import tornadofx.button
-import tornadofx.label
-import tornadofx.Stylesheet
-import tornadofx.px
-import tornadofx.text
-import tornadofx.launch
-import tornadofx.clear
+import tic_tac_toe.GameController.Companion.FIELD_RANGE
+import tic_tac_toe.GameView.Companion.CELL_SIZE
+import tornadofx.*
 
 class TicTacApp : App(GameView::class, GameStyle::class)
-
 class GameView : View("Tic-tac-toe") {
-    companion object {
-        private var fieldView = GameFieldView()
+    companion object { const val CELL_SIZE = 150.0 }
 
-        fun showGameOverScreen(winnerName: String) = GameOverView(winnerName, fieldView).openWindow()
-    }
+    private val gameController = GameController(this)
+    private val cells: List<MutableList<Button>> = List(FIELD_RANGE.count()) { mutableListOf() }
 
-    override val root = fieldView.root
-}
-
-class GameFieldView : Fragment("Tic-tac-toe") {
-    companion object {
-        private const val CELL_SIZE = 100.0
-    }
-    override var root = getInitializedField()
-
-    private fun getInitializedField() =
-        vbox {
-            setPrefSize(CELL_SIZE * 3, CELL_SIZE * 3)
-            for (y in GameController.FIELD_RANGE)
-                hbox {
-                    for (x in GameController.FIELD_RANGE)
-                        button(" ") {
-                            setPrefSize(CELL_SIZE, CELL_SIZE)
-                            setOnAction {
-                                val markedCellText = GameController.markCell(x, y)
-                                if (markedCellText != null) text = markedCellText
-                            }
-                        }
-                }
+    fun changeCellType(xPos: Int, yPos: Int, cellType: CellType?) {
+        cellType ?: return
+        cells[yPos][xPos].text = when (cellType) {
+            CellType.NOUGHT -> "O"
+            CellType.CROSS -> "X"
+            CellType.EMPTY -> " "
         }
-
-    fun clearField() {
-        root.clear()
-        root = getInitializedField()
-    }
-}
-
-class GameOverView(
-    private val gameOverText: String,
-    private val gameFieldView: GameFieldView
-) : View("Game over") {
-    companion object {
-        private const val GAME_OVER_SCREEN_WIDTH = 120.0
-        private const val GAME_OVER_SCREEN_HEIGHT = 100.0
     }
 
-    override val root: Parent = vbox {
-        label(gameOverText) {
-            setPrefSize(GAME_OVER_SCREEN_WIDTH, GAME_OVER_SCREEN_HEIGHT)
-        }
-        button {
-            setPrefSize(GAME_OVER_SCREEN_WIDTH / 4.0, GAME_OVER_SCREEN_HEIGHT / 4.0)
-            text("Restart") {
-                setOnAction {
-                    GameController.restart()
-                    close()
-                    gameFieldView.clearField()
+    override val root = vbox {
+        setPrefSize(CELL_SIZE * FIELD_RANGE.count(), CELL_SIZE * FIELD_RANGE.count())
+        for (y in FIELD_RANGE) {
+            hbox {
+                for (x in FIELD_RANGE) {
+                    cells[y].add(button(" ") {
+                        setPrefSize(CELL_SIZE, CELL_SIZE)
+                        action { gameController.markCell(x, y) } })
                 }
             }
         }
+    }
+
+    fun openGameOverWindow(gameOverText: String) {
+        val gameOverWindow = GameOverWindow(gameOverText, gameController)
+        gameOverWindow.openWindow()
+    }
+
+    private fun clearCellField() {
+        for (x in FIELD_RANGE)
+            for (y in FIELD_RANGE)
+                changeCellType(x, y, CellType.EMPTY)
+    }
+
+    fun reinitializeView() {
+        clearCellField()
+    }
+}
+
+class GameOverWindow(
+    private val gameOverText: String,
+    private val gameController: GameController
+) : Fragment("GAME OVER") {
+    override val root = vbox {
+        alignment = Pos.BOTTOM_CENTER
+        setPrefSize(CELL_SIZE * 2, CELL_SIZE * 0.8)
+        label(gameOverText)
+        button("New Game") {
+            action { onNewGameButtonPressed() }
+            useMaxWidth = true
+        }
+    }
+
+    private fun onNewGameButtonPressed() {
+        gameController.startNewGame()
+        close()
+    }
+
+    private fun onWindowClosed() {
+        find<GameView>().close()
+        close()
+    }
+
+    override fun onDock() {
+        currentWindow?.setOnCloseRequest { onWindowClosed() }
     }
 }
 
 class GameStyle : Stylesheet() {
     init {
         button {
-            fontSize = 25.px
+            fontSize = (CELL_SIZE / 6).px
             fontWeight = FontWeight.EXTRA_BOLD
             fontFamily = "Comic Sans MS"
         }
         label {
-            fontSize = 20.px
+            fontSize = (CELL_SIZE / 5).px
             fontWeight = FontWeight.EXTRA_BOLD
             fontFamily = "Comic Sans MS"
         }
