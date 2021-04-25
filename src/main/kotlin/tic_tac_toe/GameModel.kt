@@ -6,10 +6,11 @@ private var currentCellType = CellType.CROSS
 private var gameOver = false
 private var winner: CellType? = null
 
-enum class CellType(val symbol: Char) {
-    EMPTY('*'), CROSS('X'), NOUGHT('O')
+enum class CellType {
+    EMPTY, CROSS, NOUGHT
 }
 
+@Suppress("TooManyFunctions")
 class GameModel {
     private var field =
         MutableList(FIELD_RANGE.count()) {
@@ -71,7 +72,6 @@ class GameModel {
         return currentCellType
     }
 
-
     private fun getTypeCells(type: CellType): List<CellType> = List(FIELD_RANGE.count()) { type }
 
     private fun checkCellsWinner(checkedCells: List<CellType>): CellType? =
@@ -85,20 +85,20 @@ class GameModel {
         (xPos == yPos) || ((xPos + yPos) == (FIELD_RANGE.count() - 1))
 
     private fun winCheck(chosenCellXPos: Int, chosenCellYPos: Int): CellType? {
+        var winner: CellType? = null
         val horizontalWinner = checkCellsWinner(getRow(chosenCellYPos))
         val verticalWinner = checkCellsWinner(getColumn(chosenCellXPos))
 
-        if (horizontalWinner != null) return horizontalWinner
-        if (verticalWinner != null) return verticalWinner
-        if (isDiagonalsPosition(chosenCellXPos, chosenCellYPos)) {
+        if (horizontalWinner != null) winner = horizontalWinner
+        else if (verticalWinner != null) winner = verticalWinner
+        else if (isDiagonalsPosition(chosenCellXPos, chosenCellYPos)) {
             val diagonals = getDiagonals()
             val diagonalsWinners = Pair(checkCellsWinner(diagonals.first), checkCellsWinner(diagonals.second))
-            if (diagonalsWinners.first != null) return diagonalsWinners.first
-            if (diagonalsWinners.second != null) return diagonalsWinners.second
-        }
-        if (!haveEmptyCells()) return CellType.EMPTY
+            if (diagonalsWinners.first != null) winner = diagonalsWinners.first
+            else if (diagonalsWinners.second != null) winner = diagonalsWinners.second
+        } else if (!haveEmptyCells()) winner = CellType.EMPTY
 
-        return null
+        return winner
     }
 
     private fun gameOver(newWinner: CellType) {

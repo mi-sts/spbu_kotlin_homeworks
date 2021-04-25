@@ -5,7 +5,18 @@ import javafx.scene.control.Button
 import javafx.scene.text.FontWeight
 import tic_tac_toe.GameController.Companion.FIELD_RANGE
 import tic_tac_toe.GameView.Companion.CELL_SIZE
-import tornadofx.*
+import tornadofx.App
+import tornadofx.View
+import tornadofx.hbox
+import tornadofx.vbox
+import tornadofx.button
+import tornadofx.action
+import tornadofx.label
+import tornadofx.Fragment
+import tornadofx.Stylesheet
+import tornadofx.launch
+import tornadofx.useMaxWidth
+import tornadofx.px
 
 class TicTacApp : App(GameView::class, GameStyle::class)
 class GameView : View("Tic-tac-toe") {
