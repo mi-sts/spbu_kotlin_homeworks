@@ -1,7 +1,15 @@
 package tic_tac_toe
 
 enum class CellType {
-    EMPTY, CROSS, NOUGHT
+    EMPTY, CROSS, NOUGHT;
+
+    companion object {
+        fun oppositeType(cellType: CellType): CellType? = when (cellType) {
+            CROSS -> NOUGHT
+            NOUGHT -> CROSS
+            else -> null
+        }
+    }
 }
 
 data class Position(val x: Int, val y: Int)
@@ -59,7 +67,8 @@ class GameModel {
     }
 
     private fun changeCurrentCellType() {
-        currentCellType = if (currentCellType == CellType.CROSS) CellType.NOUGHT else CellType.CROSS
+        currentCellType = CellType.oppositeType(currentCellType) ?: throw
+        NullPointerException("The current cell type is null!")
     }
 
     fun markCell(position: Position): CellType? {

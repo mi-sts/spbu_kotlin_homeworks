@@ -5,6 +5,8 @@ formatting:
   PackageName:
     active: false
     autoCorrect: false
+  NoWildcardImports:
+    active: false
 
 naming:
   active: true
@@ -15,4 +17,6 @@ naming:
 
 style:
   MagicNumber:
+    active: false
+  WildcardImport:
     active: false
