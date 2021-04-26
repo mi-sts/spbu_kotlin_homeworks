@@ -10,6 +10,6 @@ class MenuController(private val menuView: MenuView) : Controller() {
         menuView.close()
         val gameView = GameView()
         gameView.openWindow()
-        gameView.initilizeGame(playerCellType, botType)
+        gameView.initializeGame(playerCellType, botType)
     }
 }

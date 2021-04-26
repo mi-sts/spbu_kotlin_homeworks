@@ -20,7 +20,7 @@ class GameView : View("Tic-tac-toe") {
         }
     }
 
-    fun initilizeGame(playerCellType: CellType, botType: GameController.BotType) {
+    fun initializeGame(playerCellType: CellType, botType: GameController.BotType) {
         gameController.startNewGame(playerCellType, botType)
     }
 

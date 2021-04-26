@@ -14,11 +14,11 @@ class MenuView : View("Menu") {
         private const val MENU_HEIGHT = GameView.CELL_SIZE * 0.75
     }
     private val difficultyToggleGroup = ToggleGroup()
-    lateinit var easyDifficultyButton: ToggleButton
-    lateinit var hardDifficultyButton: ToggleButton
+    private lateinit var easyDifficultyButton: ToggleButton
+    private lateinit var hardDifficultyButton: ToggleButton
     private val sideToggleGroup = ToggleGroup()
-    lateinit var noughtSideButton: ToggleButton
-    lateinit var crossSideButton: ToggleButton
+    private lateinit var noughtSideButton: ToggleButton
+    private lateinit var crossSideButton: ToggleButton
     private val menuController = MenuController(this)
 
     override val root = borderpane {
