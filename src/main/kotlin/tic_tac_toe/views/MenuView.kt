@@ -10,8 +10,8 @@ import tornadofx.*
 
 class MenuView : View("Menu") {
     companion object {
-        private const val MENU_WIDTH = GameView.CELL_SIZE * 1.5
-        private const val MENU_HEIGHT = GameView.CELL_SIZE * 0.75
+        private const val MENU_WIDTH = GameView.CELL_SIZE * 3
+        private const val MENU_HEIGHT = GameView.CELL_SIZE * 1.5
     }
     private val difficultyToggleGroup = ToggleGroup()
     private lateinit var easyDifficultyButton: ToggleButton
@@ -20,34 +20,41 @@ class MenuView : View("Menu") {
     private lateinit var noughtSideButton: ToggleButton
     private lateinit var crossSideButton: ToggleButton
     private val menuController = MenuController(this)
+    private val toggleButtonsSize = Pair(MENU_WIDTH / 4, MENU_HEIGHT / 6)
+    private val menuRowSize = Pair(MENU_WIDTH, MENU_HEIGHT / 3)
+    private val buttonsSeparatorSize = MENU_HEIGHT / 6
 
     override val root = borderpane {
         addClass(GameStyle.menuStyle)
         setPrefSize(MENU_WIDTH, MENU_HEIGHT)
-        center {
-            vbox(MENU_HEIGHT / 15) {
+        top {
+            vbox(buttonsSeparatorSize) {
                 borderpane {
                     left { label("Difficulty") }
+                    setPrefSize(menuRowSize.first, menuRowSize.second)
                     right {
+                        paddingTop = buttonsSeparatorSize
                         hbox {
                             easyDifficultyButton = togglebutton("Easy", difficultyToggleGroup) {
-                                setPrefSize(MENU_WIDTH / 4, height)
+                                setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
                             }
                             hardDifficultyButton = togglebutton("Hard", difficultyToggleGroup) {
-                                setPrefSize(MENU_WIDTH / 4, height)
+                                setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
                             }
                         }
                     }
                 }
+                separator()
                 borderpane {
                     left { label("Side") }
+                    setPrefSize(menuRowSize.first, menuRowSize.second)
                     right {
                         hbox {
                             crossSideButton = togglebutton("Cross", sideToggleGroup) {
-                                setPrefSize(MENU_WIDTH / 4, height)
+                                setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
                             }
                             noughtSideButton = togglebutton("Nought", sideToggleGroup) {
-                                setPrefSize(MENU_WIDTH / 4, height)
+                                setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
                             }
                         }
                     }

@@ -6,8 +6,8 @@ import tornadofx.*
 
 class GameOverView(private val gameOverText: String) : Fragment("GAME OVER") {
     companion object {
-        private const val MENU_WIDTH = GameView.CELL_SIZE * 1.8
-        private const val MENU_HEIGHT = GameView.CELL_SIZE * 0.5
+        private const val MENU_WIDTH = GameView.CELL_SIZE * 3.2
+        private const val MENU_HEIGHT = GameView.CELL_SIZE * 1
     }
     private val gameOverController = GameOverController(this)
 

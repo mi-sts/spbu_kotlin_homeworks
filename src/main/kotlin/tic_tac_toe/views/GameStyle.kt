@@ -21,11 +21,11 @@ class GameStyle : Stylesheet() {
         }
         menuStyle {
             label {
-                fontSize = (GameView.CELL_SIZE / 10).px
+                fontSize = (GameView.CELL_SIZE / 5).px
                 fontFamily = "Comic Sans MS"
             }
             button {
-                fontSize = (GameView.CELL_SIZE / 10).px
+                fontSize = (GameView.CELL_SIZE / 5).px
                 fontFamily = "Comic Sans MS"
             }
         }
