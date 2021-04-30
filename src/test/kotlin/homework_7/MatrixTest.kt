@@ -66,7 +66,6 @@ internal class MatrixTest {
     @MethodSource("multiplicationMatrices")
     @ParameterizedTest(name = "multiplicationTest{index}")
     fun timesTest(firstMatrix: Matrix, secondMatrix: Matrix, resultMatrix: Matrix) {
-        println(runBlocking { firstMatrix * secondMatrix })
         assertEquals(resultMatrix, runBlocking { firstMatrix * secondMatrix })
     }
 }
