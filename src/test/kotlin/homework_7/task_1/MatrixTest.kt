@@ -1,5 +1,6 @@
-package homework_7
+package homework_7.task_1
 
+import homework_7.task_1.Matrix
 import kotlinx.coroutines.runBlocking
 
 import org.junit.jupiter.api.Assertions.*

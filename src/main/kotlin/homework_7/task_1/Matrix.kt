@@ -1,4 +1,4 @@
-package homework_7
+package homework_7.task_1
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
