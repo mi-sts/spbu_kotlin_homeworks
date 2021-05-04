@@ -51,7 +51,9 @@ internal class MergeSortTest {
     @ParameterizedTest(name = "multithreadedMergeTest{index}")
     fun multithreadedMergeTest(firstList: MutableList<Int>, secondList: MutableList<Int>) {
         val mergedList = firstList.plus(secondList).sorted()
-        assertEquals(mergedList, multithreadedMerge(firstList, secondList, 100))
+        for (i in 1..1000 step 100) {
+            assertEquals(mergedList, multithreadedMerge(firstList, secondList, i))
+        }
     }
 
     @MethodSource("numbersList")
@@ -63,6 +65,8 @@ internal class MergeSortTest {
     @MethodSource("numbersList")
     @ParameterizedTest(name = "multithreadedMergeSortTest{index}")
     fun multithreadedMergeSortTest(list: MutableList<Int>) {
-        assertEquals(list.sorted(), list.multithreadedMergeSorted(100))
+        for (i in 1..1000 step 100) {
+            assertEquals(list.sorted(), list.multithreadedMergeSorted(i))
+        }
     }
 }

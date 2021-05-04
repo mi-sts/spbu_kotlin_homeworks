@@ -5,9 +5,12 @@ import kotlin.random.Random
 import kotlin.system.measureNanoTime
 
 object MergeSortStatistics {
-    enum class Mode {
-        ELEMENTS_MODE,
-        THREADS_MODE
+    enum class Mode(val modeName: String) {
+        ELEMENTS_MODE("Elements"),
+        THREADS_MODE("Threads");
+
+        val oppositeMode: Mode
+            get() = if (this == ELEMENTS_MODE) THREADS_MODE else ELEMENTS_MODE
     }
 
     private fun getRandomNumberList(numbersCount: Int) = MutableList(numbersCount) { Random.nextInt() }

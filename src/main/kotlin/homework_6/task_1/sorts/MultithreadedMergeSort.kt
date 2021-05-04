@@ -25,8 +25,8 @@ object MultithreadedMergeSort {
                 val rightRunnable = MergeSortThreadRunnable(rightList, rightAvailableThreads)
                 val leftThread = Thread(leftRunnable)
                 val rightThread = Thread(rightRunnable)
-                leftThread.run()
-                rightThread.run()
+                leftThread.start()
+                rightThread.start()
                 leftThread.join()
                 rightThread.join()
 
@@ -83,8 +83,8 @@ object MultithreadedMergeSort {
                     val rightRunnable = MergeThreadRunnable(minListRight, maxListRight, rightAvailableThreads)
                     val leftThread = Thread(leftRunnable)
                     val rightThread = Thread(rightRunnable)
-                    leftThread.run()
-                    rightThread.run()
+                    leftThread.start()
+                    rightThread.start()
                     leftThread.join()
                     rightThread.join()
 

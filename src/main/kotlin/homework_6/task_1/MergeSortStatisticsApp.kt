@@ -53,10 +53,8 @@ class StatisticsChartView : View("Merge Sort Statistics") {
     private lateinit var threadsModeRadioButton: RadioButton
 
     private var currentMode = Mode.ELEMENTS_MODE
-    private var isModeChosen = false
 
-    private var elementsLabel = "Elements"
-    private var threadsLabel = "Threads"
+    private var timeLabel = "Nanoseconds"
 
     private val constantVariableValue: Int
         get() = constantVariableTextField.text?.toIntOrNull() ?: 1
@@ -70,16 +68,8 @@ class StatisticsChartView : View("Merge Sort Statistics") {
         newValues.forEach { statisticsSeries.data(it.key, it.value) }
 
     private fun updateLabelsText() {
-        when (currentMode) {
-            Mode.ELEMENTS_MODE -> {
-                dependentVariableLabel.text = elementsLabel
-                constantVariableLabel.text = threadsLabel
-            }
-            Mode.THREADS_MODE -> {
-                dependentVariableLabel.text = threadsLabel
-                constantVariableLabel.text = elementsLabel
-            }
-        }
+        dependentVariableLabel.text = currentMode.modeName
+        constantVariableLabel.text = currentMode.oppositeMode.modeName
     }
 
     private fun updateChart() {
@@ -87,16 +77,8 @@ class StatisticsChartView : View("Merge Sort Statistics") {
         val dependentRange = 1..dependentVariableValue
         val numberOfSteps = max(dependentRange.count() / 100, 1)
 
-        when (currentMode) {
-            Mode.ELEMENTS_MODE -> {
-                statisticsSeries.chart?.xAxis?.label = "Elements"
-                statisticsSeries.chart?.yAxis?.label = "Nanoseconds"
-            }
-            Mode.THREADS_MODE -> {
-                statisticsSeries.chart?.xAxis?.label = "Threads"
-                statisticsSeries.chart?.yAxis?.label = "Nanoseconds"
-            }
-        }
+        statisticsSeries.chart?.yAxis?.label = timeLabel
+        statisticsSeries.chart?.xAxis?.label = currentMode.modeName
 
         val statisticsMap =
             getSortStatics(constantVariableValue, dependentRange, numberOfSteps, APPROXIMATION_STEPS_NUMBER,
@@ -106,14 +88,14 @@ class StatisticsChartView : View("Merge Sort Statistics") {
     }
 
     private fun updateSliderRange() {
+        dependentVariableSlider.min = 1.0
+
         when (currentMode) {
             Mode.ELEMENTS_MODE -> {
-                dependentVariableSlider.min = 1.0
                 dependentVariableSlider.max = ELEMENTS_SLIDER_MAX_VALUE.toDouble()
                 dependentVariableSlider.majorTickUnit = ELEMENTS_SLIDER_MAX_VALUE / 1000.0
             }
             Mode.THREADS_MODE -> {
-                dependentVariableSlider.min = 1.0
                 dependentVariableSlider.max = THREADS_SLIDER_MAX_VALUE.toDouble()
             }
         }
@@ -126,9 +108,8 @@ class StatisticsChartView : View("Merge Sort Statistics") {
     }
 
     private fun onModeButtonPressed(modeOfButton: Mode) {
-        if (isModeChosen && currentMode == modeOfButton) return
+        if (currentMode == modeOfButton) return
 
-        isModeChosen = true
         currentMode = modeOfButton
         onModeChanged()
     }
@@ -164,15 +145,10 @@ class StatisticsChartView : View("Merge Sort Statistics") {
                     action { onModeButtonPressed(Mode.ELEMENTS_MODE) }
                 }
                 when (currentMode) {
-                    Mode.ELEMENTS_MODE -> {
-                        modeToggleGroup.selectToggle(elementsModeRadioButton)
-                        onModeButtonPressed(Mode.ELEMENTS_MODE)
-                    }
-                    Mode.THREADS_MODE -> {
-                        modeToggleGroup.selectToggle(threadsModeRadioButton)
-                        onModeButtonPressed(Mode.THREADS_MODE)
-                    }
+                    Mode.ELEMENTS_MODE -> modeToggleGroup.selectToggle(elementsModeRadioButton)
+                    Mode.THREADS_MODE -> modeToggleGroup.selectToggle(threadsModeRadioButton)
                 }
+                onModeButtonPressed(currentMode)
             }
             updateLabelsText()
         }
