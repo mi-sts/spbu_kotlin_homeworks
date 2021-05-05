@@ -8,11 +8,10 @@ object MultithreadedMergeSort {
         private val list: MutableList<K>,
         private val numberOfAvailableThreads: Int
     ) : Runnable {
-        companion object { private const val MERGE_THREADS_COEFFICIENT = 0.1 }
         private var sortedList: MutableList<K>? = null
 
         override fun run() {
-            val availableThreads = numberOfAvailableThreads - 1
+            val availableThreads = numberOfAvailableThreads - 1 // Subtract the current thread.
             val mid = list.count() / 2
             val leftList = list.subList(0, mid)
             val rightList = list.subList(mid, list.count())
@@ -34,12 +33,12 @@ object MultithreadedMergeSort {
                     "The sorted list is null!"
                 }
                 sortedList = multithreadedMerge(leftRunnable.getSorted(), rightRunnable.getSorted(),
-                    (numberOfAvailableThreads * MERGE_THREADS_COEFFICIENT).toInt())
+                    numberOfAvailableThreads)
             } else {
                 val leftSortedList = leftList.mergeSorted()
                 val rightSortedList = rightList.mergeSorted()
                 sortedList = multithreadedMerge(leftSortedList, rightSortedList,
-                    (numberOfAvailableThreads * MERGE_THREADS_COEFFICIENT).toInt())
+                    numberOfAvailableThreads)
             }
         }
 
