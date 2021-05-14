@@ -9,72 +9,55 @@ import homework_6.task_1.sorts.MergeSort.mergeSorted
 import homework_6.task_1.sorts.MultithreadedMergeSort.multithreadedMerge
 import homework_6.task_1.sorts.MultithreadedMergeSort.multithreadedMergeSorted
 
+fun main() {
+    print(MergeSortTest.sortedNumbers)
+    print(MergeSortTest.sortedLists())
+    print(MergeSortTest.sortedListsWithThreads())
+}
+
 internal class MergeSortTest {
     companion object {
-        private val threadsNumber = (1..1000 step 100).toList()
-
-        @JvmStatic
-        fun numbersList(): List<Arguments> = listOf(
-            Arguments.of(mutableListOf<Int>()),
-            Arguments.of(mutableListOf(1)),
-            Arguments.of(mutableListOf(3, 1, 2)),
-            Arguments.of(mutableListOf(-4, 5, 12, 0, 89, 44, 13, 7, 6, 3, 7))
+        private val threadsNumberRange = (1..1000 step 100).toList()
+        private val numbers: List<List<Int>> = listOf(
+            mutableListOf(),
+            mutableListOf(1),
+            mutableListOf(3, 1, 2),
+            mutableListOf(-4, 5, 12, 0, 89, 44, 13, 7, 6, 3, 7)
         )
 
-        @JvmStatic
-        fun numbersListWithThreads(): List<Arguments> = threadsNumber.map {
-            listOf(
-                Arguments.of(mutableListOf<Int>(), it),
-                Arguments.of(mutableListOf(1), it),
-                Arguments.of(mutableListOf(3, 1, 2), it),
-                Arguments.of(mutableListOf(-4, 5, 12, 0, 89, 44, 13, 7, 6, 3, 7), it)
-            )
-        }.flatten()
-
-        @JvmStatic
-        fun sortedLists(): List<Arguments> = listOf(
-            Arguments.of(
-                mutableListOf<Int>(),
+        val sortedNumbers: List<Pair<MutableList<Int>, MutableList<Int>>> = listOf(
+            Pair(
+                mutableListOf(),
                 mutableListOf(1, 2, 3, 4)
             ),
-            Arguments.of(
+            Pair(
                 mutableListOf(1, 2, 3, 4),
-                mutableListOf<Int>()
+                mutableListOf()
             ),
-            Arguments.of(
+            Pair(
                 mutableListOf(1, 3, 5, 7, 9),
                 mutableListOf(2, 4, 6, 8, 10)
             ),
-            Arguments.of(
+            Pair(
                 mutableListOf(-5, -3, -1, 1, 3, 5),
                 mutableListOf(-4, -2, 4, 6, 10)
             )
         )
 
         @JvmStatic
-        fun sortedListsWithThreads(): List<Arguments> = threadsNumber.map {
-            listOf(
-                Arguments.of(
-                    mutableListOf<Int>(),
-                    mutableListOf(1, 2, 3, 4),
-                    it
-                ),
-                Arguments.of(
-                    mutableListOf(1, 2, 3, 4),
-                    mutableListOf<Int>(),
-                    it
-                ),
-                Arguments.of(
-                    mutableListOf(1, 3, 5, 7, 9),
-                    mutableListOf(2, 4, 6, 8, 10),
-                    it
-                ),
-                Arguments.of(
-                    mutableListOf(-5, -3, -1, 1, 3, 5),
-                    mutableListOf(-4, -2, 4, 6, 10),
-                    it
-                )
-            )
+        fun numbersList(): List<Arguments> = numbers.map { Arguments.of(it) }
+
+        @JvmStatic
+        fun numbersListWithThreads(): List<Arguments> = threadsNumberRange.map {
+            threadsNumber -> numbers.map { Arguments.of(it, threadsNumber) }
+        }.flatten()
+
+        @JvmStatic
+        fun sortedLists(): List<Arguments> = sortedNumbers.map { Arguments.of(it.first, it.second)}
+
+        @JvmStatic
+        fun sortedListsWithThreads(): List<Arguments> = threadsNumberRange.map {
+            threadsNumber -> sortedNumbers.map { Arguments.of(it.first, it.second, threadsNumber) }
         }.flatten()
     }
 
