@@ -8,13 +8,13 @@ import kotlinx.coroutines.joinAll
 import java.lang.IllegalArgumentException
 
 data class Matrix(private val matrixArray: Array<DoubleArray>) {
+    private val height = matrixArray.size
+    private val width = matrixArray[0].size
+
     init {
         require(matrixArray.isNotEmpty() && matrixArray[0].isNotEmpty()) {
             IllegalArgumentException("The matrix size cannot be zero!") }
     }
-
-    private val height = matrixArray.size
-    private val width = matrixArray[0].size
 
     suspend operator fun times(other: Matrix): Matrix {
         require(width == other.height) {
@@ -38,19 +38,7 @@ data class Matrix(private val matrixArray: Array<DoubleArray>) {
 
     override fun equals(other: Any?): Boolean {
         return if (other !is Matrix) false
-        else {
-            var areMatrixArraysEqual = true
-            if (width != other.width || height != other.height) areMatrixArraysEqual = false
-            else {
-                for (i in matrixArray.indices)
-                    if (!matrixArray[i].contentEquals(other.matrixArray[i])) {
-                        areMatrixArraysEqual = false
-                        break
-                    }
-            }
-
-            areMatrixArraysEqual
-        }
+        else matrixArray.contentDeepEquals(other.matrixArray)
     }
 
     override fun hashCode(): Int {
