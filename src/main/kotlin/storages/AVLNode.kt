@@ -4,9 +4,9 @@ package storages
 
 import kotlin.math.max
 
-data class AVLNode <K : Comparable<K>, V> (
+class AVLNode <K : Comparable<K>, V> (
     override val key: K,
-    private val initValue: V,
+    initValue: V,
 ) : MutableMap.MutableEntry<K, V> {
     companion object { const val BALANCE_COEFFICIENT = 2 }
 
