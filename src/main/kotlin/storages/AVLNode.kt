@@ -6,14 +6,14 @@ import kotlin.math.max
 
 data class AVLNode <K : Comparable<K>, V> (
     override val key: K,
-    override val value: V,
+    private val initValue: V,
 ) : MutableMap.MutableEntry<K, V> {
     companion object { const val BALANCE_COEFFICIENT = 2 }
 
     private var leftChild: AVLNode<K, V>? = null
     private var rightChild: AVLNode<K, V>? = null
-
-    private var _value = value
+    override var value: V = initValue
+        private set
 
     private var height = 1
 
@@ -93,7 +93,7 @@ data class AVLNode <K : Comparable<K>, V> (
        when {
             key < this.key -> leftChild = leftChild?.insertNode(key, value) ?: AVLNode(key, value)
             key > this.key -> rightChild = rightChild?.insertNode(key, value) ?: AVLNode(key, value)
-            else -> this.apply { _value = value }
+            else -> this.apply { this.value = value }
         }
 
         updateHeight()
@@ -149,7 +149,7 @@ data class AVLNode <K : Comparable<K>, V> (
     }
 
     fun getWrittenInDirectOrder(): String {
-        val nodeElement = "($key -> $_value) "
+        val nodeElement = "($key -> $value) "
         return when {
             isLeaf() -> nodeElement
             hasOneChild() ->
@@ -159,5 +159,5 @@ data class AVLNode <K : Comparable<K>, V> (
         }
     }
 
-    override fun setValue(newValue: V): V = _value.also { _value = newValue }
+    override fun setValue(newValue: V): V = value.also { value = newValue }
 }
