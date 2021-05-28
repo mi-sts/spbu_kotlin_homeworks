@@ -9,12 +9,6 @@ import homework_6.task_1.sorts.MergeSort.mergeSorted
 import homework_6.task_1.sorts.MultithreadedMergeSort.multithreadedMerge
 import homework_6.task_1.sorts.MultithreadedMergeSort.multithreadedMergeSorted
 
-fun main() {
-    print(MergeSortTest.sortedNumbers)
-    print(MergeSortTest.sortedLists())
-    print(MergeSortTest.sortedListsWithThreads())
-}
-
 internal class MergeSortTest {
     companion object {
         private val threadsNumberRange = (1..1000 step 100).toList()
