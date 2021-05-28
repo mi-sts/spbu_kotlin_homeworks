@@ -13,22 +13,26 @@ private fun <T> arithmeticExceptionMessage(values: Iterable<T>) {
  * @return the sorted array with elements from the iterable object.
  */
 fun <T> Iterable<T>.bubbleSort(comparator: Comparator<T>): List<T> {
-    try {
-        val sortedList = this.toMutableList()
+    val sortedList = this.toMutableList()
+    var swap = true
 
-        var swap = true
-        while (swap) {
-            swap = false
-            for (i in 0 until sortedList.lastIndex) {
-                if (comparator.compare(sortedList[i], sortedList[i + 1]) > 0) {
-                    sortedList[i] = sortedList[i + 1].also { sortedList[i + 1] = sortedList[i] }
-                    swap = true
-                }
+    while (swap) {
+        swap = false
+        for (i in 0 until sortedList.lastIndex) {
+            var compareResult: Int
+
+            try {
+                compareResult = comparator.compare(sortedList[i], sortedList[i + 1])
+            } catch (e: ArithmeticException) {
+                arithmeticExceptionMessage(this)
+                return emptyList()
+            }
+
+            if (compareResult > 0) {
+                sortedList[i] = sortedList[i + 1].also { sortedList[i + 1] = sortedList[i] }
+                swap = true
             }
         }
-        return sortedList
-    } catch (e: ArithmeticException) {
-        arithmeticExceptionMessage(this)
-        return emptyList()
     }
+    return sortedList
 }
