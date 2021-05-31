@@ -29,6 +29,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
 }
 
 tasks.dokkaHtml.configure {
