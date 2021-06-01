@@ -6,7 +6,7 @@ class DoublyLinkedList <T> {
     private var listRoot: DoublyLinkedListNode<T>? = null
     private var firstNode: DoublyLinkedListNode<T>? = null
     private var lastNode: DoublyLinkedListNode<T>? = null
-    
+
     fun isEmpty() = listRoot == null
 
     private fun getNode(position: Int): DoublyLinkedListNode<T>? {
@@ -30,8 +30,7 @@ class DoublyLinkedList <T> {
             listRoot = DoublyLinkedListNode(data, null, null)
             firstNode = listRoot
             lastNode = listRoot
-        }
-        else {
+        } else {
             val newLastNode = DoublyLinkedListNode(data, lastNode, null)
             lastNode?.next = newLastNode
             lastNode = newLastNode
@@ -95,14 +94,4 @@ class DoublyLinkedList <T> {
 
         return values
     }
-}
-
-fun main() {
-    val elements = listOf(1, 2, 3)
-    val list: DoublyLinkedList<Int> = DoublyLinkedList()
-    val positions = listOf(0, 1, 0)
-
-    elements.forEachIndexed { index, it -> list.add(it, positions[index]) }
-
-    print(list.toList())
 }
