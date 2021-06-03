@@ -2,14 +2,15 @@ package tic_tac_toe.views
 
 import javafx.scene.control.Button
 import tic_tac_toe.CellType
-import tic_tac_toe.controllers.GameController
-import tic_tac_toe.GameModel.Companion.FIELD_RANGE
+import tic_tac_toe.GameField.Companion.FIELD_SIZE
+import tic_tac_toe.GameController
 import tornadofx.*
 
 class GameView : View("Tic-tac-toe") {
+    private val gameController: GameController by inject()
+
     companion object { const val CELL_SIZE = 150.0 }
-    private val cells: List<MutableList<Button>> = List(FIELD_RANGE.count()) { mutableListOf() }
-    private val gameController = GameController(this)
+    private val cells: List<MutableList<Button>> = List(FIELD_SIZE) { mutableListOf() }
 
     fun changeCellType(xPos: Int, yPos: Int, cellType: CellType?) {
         cellType ?: return
@@ -20,19 +21,15 @@ class GameView : View("Tic-tac-toe") {
         }
     }
 
-    fun initializeGame(playerCellType: CellType, botType: GameController.BotType) {
-        gameController.startNewGame(playerCellType, botType)
-    }
-
     override val root = vbox {
         addClass(GameStyle.fieldStyle)
-        setPrefSize(CELL_SIZE * FIELD_RANGE.count(), CELL_SIZE * FIELD_RANGE.count())
-        for (y in FIELD_RANGE) {
+        setPrefSize(CELL_SIZE * FIELD_SIZE, CELL_SIZE * FIELD_SIZE)
+        for (y in 0 until FIELD_SIZE) {
             hbox {
-                for (x in FIELD_RANGE) {
+                for (x in 0 until FIELD_SIZE) {
                     cells[y].add(button(" ") {
                         setPrefSize(CELL_SIZE, CELL_SIZE)
-                        action { gameController.playerStep(x, y) } })
+                        action { gameController.markCell(x, y) } })
                 }
             }
         }
@@ -44,8 +41,8 @@ class GameView : View("Tic-tac-toe") {
     }
 
     private fun clearCellField() {
-        for (x in FIELD_RANGE)
-            for (y in FIELD_RANGE)
+        for (x in 0 until FIELD_SIZE)
+            for (y in 0 until FIELD_SIZE)
                 changeCellType(x, y, CellType.EMPTY)
     }
 

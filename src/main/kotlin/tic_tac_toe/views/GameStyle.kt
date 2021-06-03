@@ -6,6 +6,7 @@ import tornadofx.cssclass
 import tornadofx.label
 import tornadofx.px
 
+@Suppress("MagicNumber")
 class GameStyle : Stylesheet() {
     companion object {
         val fieldStyle by cssclass()

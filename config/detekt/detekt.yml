@@ -16,7 +16,5 @@ naming:
     packagePattern: '[a-z]+(_[A-Za-z0-9]+)*(\.[a-z]+(_[A-Za-z0-9]+)*)*'
 
 style:
-  MagicNumber:
-    active: false
   WildcardImport:
     active: false

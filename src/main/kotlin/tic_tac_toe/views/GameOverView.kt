@@ -1,7 +1,6 @@
 package tic_tac_toe.views
 
 import javafx.geometry.Pos
-import tic_tac_toe.controllers.GameOverController
 import tornadofx.*
 
 class GameOverView(private val gameOverText: String) : Fragment("GAME OVER") {
@@ -9,7 +8,6 @@ class GameOverView(private val gameOverText: String) : Fragment("GAME OVER") {
         private const val MENU_WIDTH = GameView.CELL_SIZE * 3.2
         private const val MENU_HEIGHT = GameView.CELL_SIZE * 1
     }
-    private val gameOverController = GameOverController(this)
 
     override val root = vbox {
         addClass(GameStyle.menuStyle)
@@ -17,8 +15,13 @@ class GameOverView(private val gameOverText: String) : Fragment("GAME OVER") {
         setPrefSize(MENU_WIDTH, MENU_HEIGHT)
         label(gameOverText)
         button("Menu") {
-            action { gameOverController.onMenuButtonPressed() }
+            action { onMenuButtonPressed() }
             useMaxWidth = true
         }
+    }
+
+    private fun onMenuButtonPressed() {
+        close()
+        find<MenuView>().openWindow()
     }
 }

@@ -1,10 +1,9 @@
-package tic_tac_toe.bots
+package tic_tac_toe.game_models
 
 import tic_tac_toe.CellType
-import tic_tac_toe.GameModel
 import tic_tac_toe.Position
 
-class SimpleBot(botCellType: CellType, gameModel: GameModel) : Bot(botCellType, gameModel) {
+class PVESimpleGameModel(playerCellType: CellType) : PVEGameModel(playerCellType) {
     override fun makeDecision(): Position? {
         val emptyPositions = getEmptyPositions()
         if (!isBotStep() || emptyPositions.isEmpty()) return null
