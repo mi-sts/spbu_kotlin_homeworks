@@ -10,3 +10,5 @@ fun String.findSubstringCount(subString: String): Int {
 
     return this.windowed(subString.length).count { it == subString }
 }
+
+fun String.isNumber(): Boolean = this.toIntOrNull() != null
