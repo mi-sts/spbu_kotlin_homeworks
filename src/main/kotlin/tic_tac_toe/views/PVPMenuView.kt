@@ -53,6 +53,8 @@ class PVPMenuView : View("Menu") {
     }
 
     private fun onStartButtonPressed() {
+        if (pvpModeToggleGroup.selectedToggle == null) return
+        
         close()
         val gameView = find<GameView>()
         gameView.openWindow()

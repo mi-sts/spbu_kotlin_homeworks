@@ -72,6 +72,8 @@ class PVEMenuView : View("Menu") {
     }
 
     private fun onStartButtonPressed() {
+        if (difficultyToggleGroup.selectedToggle == null || sideToggleGroup.selectedToggle == null) return
+
         close()
         val gameView = find<GameView>()
         gameView.openWindow()
