@@ -23,7 +23,7 @@ internal class CreateTestBlankTest {
     }
 
     @MethodSource("testBlankData")
-    @ParameterizedTest(name = "generateTestBlank - {3}")
+    @ParameterizedTest(name = "generateTestBlank - {index}")
     fun generateTestBlankTest(dataFileName: String, testFolderName: String, packageName: String,
                               generatedFileName: String, @TempDir tempDirectory: Path)  {
         val testData = javaClass.getResource("generation/$testFolderName/$dataFileName")
