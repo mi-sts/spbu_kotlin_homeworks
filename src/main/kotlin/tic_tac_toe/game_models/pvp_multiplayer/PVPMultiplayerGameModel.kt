@@ -60,7 +60,6 @@ class PVPMultiplayerGameModel : GameModel() {
             for (receivedStateText in incoming) {
                 receivedStateText as? Frame.Text ?: continue
                 val receivedStateString = receivedStateText.readText()
-                println("Received: $receivedStateString")
                 if (receivedStateString == RECEIVED_MESSAGE) {
                     onEnemyReceive()
                 } else {
@@ -77,7 +76,6 @@ class PVPMultiplayerGameModel : GameModel() {
     private suspend fun DefaultClientWebSocketSession.sendStepData(stepData: MultiplayerStepData) {
         try {
             val stepDataString = Json.encodeToString(stepData)
-            println("Sent: $stepDataString")
             send(stepDataString)
         } catch (e: SerializationException) {
             println("Serialize error while sending: " + e.localizedMessage)

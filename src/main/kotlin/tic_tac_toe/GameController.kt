@@ -51,7 +51,6 @@ class GameController : Controller() {
     }
 
     private fun onGameOver(winner: CellType) {
-        println("GAME OVER")
         runLater(Duration(GAME_OVER_DELAY)) {
             gameView.close()
             when (winner) {
