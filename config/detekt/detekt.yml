@@ -5,6 +5,8 @@ formatting:
   PackageName:
     active: false
     autoCorrect: false
+  NoWildcardImports:
+    active: false
 
 naming:
   active: true
@@ -12,3 +14,7 @@ naming:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     packagePattern: '[a-z]+(_[A-Za-z0-9]+)*(\.[a-z]+(_[A-Za-z0-9]+)*)*'
+
+style:
+  WildcardImport:
+    active: false
