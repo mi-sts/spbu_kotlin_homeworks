@@ -1,5 +1,8 @@
 package tic_tac_toe
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Position(val x: Int, val y: Int)
 
 enum class CellType {

@@ -6,6 +6,7 @@ import tic_tac_toe.game_models.GameModel
 import tic_tac_toe.game_models.PVEHardGameModel
 import tic_tac_toe.game_models.PVESimpleGameModel
 import tic_tac_toe.game_models.PVPGameModel
+import tic_tac_toe.game_models.pvp_multiplayer.PVPMultiplayerGameModel
 import tornadofx.Controller
 import tornadofx.runLater
 
@@ -17,7 +18,7 @@ data class StepState(
 )
 
 enum class GameMode {
-    PVP, PVE_SIMPLE, PVE_HARD
+    PVP, PVP_MULTIPLAYER, PVE_SIMPLE, PVE_HARD
 }
 
 class GameController : Controller() {
@@ -29,8 +30,10 @@ class GameController : Controller() {
     private val gameView = find<GameView>()
 
     fun startNewGame(gameMode: GameMode, playerCellType: CellType?) {
-        if (gameMode == GameMode.PVP) gameModel = PVPGameModel()
-        else {
+        if (gameMode == GameMode.PVP || gameMode == GameMode.PVP_MULTIPLAYER) {
+            if (gameMode == GameMode.PVP) gameModel = PVPGameModel()
+            else if (gameMode == GameMode.PVP_MULTIPLAYER) gameModel = PVPMultiplayerGameModel()
+        } else {
             require(playerCellType != null) { NullPointerException("The player cell type is null!") }
             if (gameMode == GameMode.PVE_SIMPLE) gameModel = PVESimpleGameModel(playerCellType)
             else if (gameMode == GameMode.PVE_HARD) gameModel = PVEHardGameModel(playerCellType)
@@ -40,7 +43,7 @@ class GameController : Controller() {
     fun markCell(xPos: Int, yPos: Int) = gameModel.move(Position(xPos, yPos))
 
     fun updateGameState(stepState: StepState) {
-        gameView.changeCellType(stepState.position.x, stepState.position.y, stepState.markedCellType)
+        runLater { gameView.changeCellType(stepState.position.x, stepState.position.y, stepState.markedCellType) }
         if (stepState.isGameOver) {
             require(stepState.winner != null) { NullPointerException("The winner is null!") }
             onGameOver(stepState.winner)
@@ -48,6 +51,7 @@ class GameController : Controller() {
     }
 
     private fun onGameOver(winner: CellType) {
+        println("GAME OVER")
         runLater(Duration(GAME_OVER_DELAY)) {
             gameView.close()
             when (winner) {

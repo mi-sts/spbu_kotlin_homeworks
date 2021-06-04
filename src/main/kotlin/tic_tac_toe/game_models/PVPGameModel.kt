@@ -6,7 +6,7 @@ import tic_tac_toe.StepState
 class PVPGameModel : GameModel() {
     override fun move(position: Position) {
         if (gameField.isGameOver) return
-        if (markCell(position)) {
+        if (markCell(position, currentCellType)) {
             val winnerCellType = gameField.winCheck()
             val stepState = StepState(position, currentCellType, winnerCellType != null, winnerCellType)
             gameController.updateGameState(stepState)

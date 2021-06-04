@@ -36,6 +36,13 @@ dependencies {
     implementation("org.openjfx:javafx:11.0.2")
     implementation("org.openjfx:javafx-controls:11.0.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
+
+    implementation("io.ktor:ktor-client-core:1.5.4")
+    implementation("io.ktor:ktor-client-cio:1.5.4")
+    implementation("io.ktor:ktor-websockets:1.5.4")
+    implementation("io.ktor:ktor-client-websockets:1.5.4")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.ktor:ktor-server-netty:1.5.4")
 }
 
 javafx {
