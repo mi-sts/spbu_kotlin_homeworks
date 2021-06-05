@@ -16,6 +16,7 @@ class PVPMenuView : View("Menu") {
 
     private val pvpModeToggleGroup = ToggleGroup()
     private lateinit var defaultModeButton: ToggleButton
+    private lateinit var multiplayerModeButton: ToggleButton
     private val toggleButtonsSize = Pair(MENU_WIDTH / 4, MENU_HEIGHT / 6)
     private val menuRowSize = Pair(MENU_WIDTH, MENU_HEIGHT / 3)
     private val buttonsSeparatorSize = MENU_HEIGHT / 6
@@ -34,6 +35,9 @@ class PVPMenuView : View("Menu") {
                             defaultModeButton = togglebutton("Default", pvpModeToggleGroup) {
                                 setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
                             }
+                            multiplayerModeButton = togglebutton("Multiplayer", pvpModeToggleGroup) {
+                                setPrefSize(toggleButtonsSize.first, toggleButtonsSize.second)
+                            }
                         }
                     }
                 }
@@ -49,6 +53,8 @@ class PVPMenuView : View("Menu") {
     }
 
     private fun onStartButtonPressed() {
+        if (pvpModeToggleGroup.selectedToggle == null) return
+
         close()
         val gameView = find<GameView>()
         gameView.openWindow()
@@ -60,6 +66,7 @@ class PVPMenuView : View("Menu") {
         val gameController = find<GameController>()
         val gameMode = when (pvpModeToggleGroup.selectedToggle) {
             defaultModeButton -> GameMode.PVP
+            multiplayerModeButton -> GameMode.PVP_MULTIPLAYER
             else -> throw NullPointerException("The selected mode is null!")
         }
 

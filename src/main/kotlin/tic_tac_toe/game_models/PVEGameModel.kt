@@ -67,7 +67,7 @@ abstract class PVEGameModel(private val playerCellType: CellType) : GameModel() 
         val botDecisionPosition = makeDecision()
         require(botDecisionPosition != null) { NullPointerException("The bot decision is null!") }
         runLater(Duration(BOT_THINKING_DELAY)) {
-            if (markCell(botDecisionPosition)) {
+            if (markCell(botDecisionPosition, currentCellType)) {
                 val winnerCellType = gameField.winCheck()
                 val botStepState = StepState(
                     botDecisionPosition, currentCellType, winnerCellType != null,
@@ -81,7 +81,7 @@ abstract class PVEGameModel(private val playerCellType: CellType) : GameModel() 
 
     private fun playerStep(position: Position) {
         if (gameField.isGameOver || !isPlayerStep()) return
-        if (markCell(position)) {
+        if (markCell(position, currentCellType)) {
             val winnerCellType = gameField.winCheck()
             val playerStepState = StepState(position, currentCellType, gameField.isGameOver, winnerCellType)
             gameController.updateGameState(playerStepState)

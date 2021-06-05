@@ -13,7 +13,8 @@ abstract class GameModel {
 
     abstract fun move(position: Position)
 
-    protected fun markCell(position: Position): Boolean = gameField.setCell(position, currentCellType)
+    protected fun markCell(position: Position, cellType: CellType): Boolean =
+        gameField.setCell(position, cellType)
 
     protected fun changeCurrentCellType() {
         currentCellType = CellType.oppositeType(currentCellType) ?: throw
